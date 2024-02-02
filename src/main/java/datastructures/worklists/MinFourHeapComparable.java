@@ -4,6 +4,7 @@ import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.worklists.PriorityWorkList;
 
 import java.util.NoSuchElementException;
+import java.lang.Math;
 
 /**
  * See cse332/interfaces/worklists/PriorityWorkList.java
@@ -17,10 +18,18 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
     //no pointers needed since it is all stored within an array
 
 
+    /*
+     * Binary min-heap:
+     * -every node is less than or equal to its children
+     * -the tree is complete such that, everylevel is filled and the last level is filled from left to right
+     * 
+     */
+
     //initialize the heap, static size of 10?
     public MinFourHeapComparable() {
         data = (E[]) new Comparable[10]; //initialize array to size 10
         maxsize = 10;
+        size = 0;
     }
 
     /**
@@ -50,7 +59,36 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
     //add to the end, perculate (follow insert procedure)
     @Override
     public void add(E work) {
-        throw new NotYetImplementedException();
+        //if the array cant fit the new element, double the size of the array
+        if (size == maxsize) {
+            E[] temp = (E[]) new Comparable[maxsize * 2];
+            //copy the old array into the new array
+            for (int i = 0; i < maxsize; i++) {
+                temp[i] = data[i];
+            }
+            data = temp;
+            maxsize = maxsize * 2;
+        }
+        data[size] = work; //add the new element to the end of the array
+        size++; //increment size 
+        //percolateUp(size - 1);
+    }
+
+    //percolate up the element at the given index
+    public void percolateUp(int index) {
+        
+        //use -1 since we start the heap at index 0
+        int parent = ((index + 1)/2) - 1; //find the parent of the index, java rounds down so no need to use Math.floor
+        E temp = data[index]; //store the value at the index
+
+        //while the index is not the root and the value of the index is less than the value of the parent
+        while (index > 0 && temp.compareTo(data[parent]) < 0) { 
+            data[index] = data[parent]; //move the current parent down
+            data[parent] = temp; //set the parent to the value of the thing perculating up
+            index = parent; //set the index to the index of the parent
+            parent = ((index + 1)/2) - 1; //find the new parent
+        }
+        
     }
 
 
@@ -68,7 +106,10 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
     //Peek would return but not remove the smallest element/root.
     @Override
     public E peek() {
-        throw new NotYetImplementedException();
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        return data[0];
     }
 
 
@@ -85,9 +126,16 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
 
     //Next returns and removes the smallest element so this is where you’d need to do a percolate operation. The next element refers to the root.
     //Duplicates are allowed. You don’t really need to do anything special to handle duplicate values. You can just treat them as any other element
+    //similar to getmin() function
     @Override
     public E next() {
-        throw new NotYetImplementedException();
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        E theMin = data[0]; //store the root/min value 
+        
+
+        return
     }
 
 
@@ -110,5 +158,6 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
 
         data = (E[]) new Comparable[10]; //initialize array to size 10
         maxsize = 10;
+        size = 0;
     }
 }
