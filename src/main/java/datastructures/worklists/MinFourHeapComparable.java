@@ -79,19 +79,20 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
             maxsize = maxsize * 2;
         }
         data[size] = work; //add the new element to the end of the array
-        size++; //increment size 
+        
         percolateUp(size); //perculate up the new element at index size (if two in array, 0,1 and size = 2)
+        size++; //increment size 
     }
 
     //percolate up the element at the given index
     //index is the index of the element that needs to be perculated up
     public void percolateUp(int childIndex) {
-        if (childIndex < 0) {
+        if (childIndex <= 0) {
             return; // Exit the method if the index is out of bounds
         }
         //use -1 since we start the heap at index 0
         //divided by 4 since we are branching by 4 each time
-        int parent = ((childIndex + 1)/4) - 1; //find the parent of the child java rounds down so no need to use Math.floor
+        int parent = ((childIndex - 1)/4); //find the parent of the child java rounds down so no need to use Math.floor
         E temp = data[childIndex]; //store the value at the child
 
         //while the childIndex is not the root and the value of the childIndex is less than the value of the parent
@@ -99,7 +100,7 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
             data[childIndex] = data[parent]; //set the element at childIndex to the value of the parent
             data[parent] = temp; //set the parent to the value of the child
             childIndex = parent; //set the childIndex to the index of the parent
-            parent = ((childIndex + 1)/4) - 1; //find the new parent of the childIndex
+            parent = ((childIndex - 1)/4) ; //find the new parent of the childIndex
         }
         
     }
