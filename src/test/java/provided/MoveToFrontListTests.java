@@ -13,6 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MoveToFrontListTests {
 
+	@Test()
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+	public void insert() {
+		MoveToFrontList<Integer, Integer> list = new MoveToFrontList<Integer, Integer>();
+
+		int[] arr = {6, 5, 10};
+		for(int i = 0; i < arr.length; i++) {
+				list.insert(arr[i], i);
+			}
+
+
+		assertEquals(list.find(6), 0, "The value of the key 6 should be 0");
+		assertEquals(list.find(5), 1, "The value of the key 5 should be 1");
+		assertEquals(list.find(10), 2, "The value of the key 10 should be 2");
+
+
+	}
+
+
 	@SuppressWarnings("unchecked")
 	@Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)

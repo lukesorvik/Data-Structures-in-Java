@@ -45,9 +45,8 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
      * 
      */
 
-    private Node head; //points to first node
-    private Node tail; //points to last node
-    private int size; //number of nodes in the linked list
+    private Node head = null; //pointer to first node
+    private int size =0; //number of nodes in the linked list
 
     class Node {
         K key;
@@ -82,47 +81,53 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
             throw new IllegalArgumentException();
         }
 
-         // Check if the key already exists in the list
-         Node current = head;
-         Node prev = null;
+        // Check if the key already exists in the list
+        Node current = head;
+        Node prev = null;
 
-         //check if key exists
-         // Iterate through the list to end
-         while (current != null) {
-            //if we find the key we are inserting, move it to the front
-             if (current.key.equals(key)) {
+        // Check if key exists
+        // Iterate through the list to end
+        while (current != null) {
+            // If we find the key we are inserting, move it to the front
+            if (current.key.equals(key)) {
+                // Move the existing node to the front, if the node is not the first node
+                if (prev != null) {
+                    prev.next = current.next; // Set the previous node's next to the current node's next
+                    current.next = head; // Point the current node to the old node at the head
+                    head = current; // Set the head to point to the current node (new head)
+                }
 
-                 // Move the existing node to the front, if the node is not the first node
-                 if (prev != null) { 
-                     prev.next = current.next; //set the previous node's next to the current node's next
-                     current.next = head; //point the current node to the old node at the head
-                     head = current; //set the head to point to the current node(new head)
-                 }
+                V oldValue = current.value; // Value of the current node before we change it
+                current.value = value; // Change the value of the current node to the new value
+                return oldValue; // Return the old value
+            }
+            prev = current; // Remember the previous node
+            current = current.next; // Move to the next node
+        }
 
-                 //it is at the front already
+        size++;
+        // Old key not found
+        Node newNode = new Node(key, value); // Create a new node with the key and value
 
-                 V oldValue = current.value; //value of the current node before we change it
-                 current.value = value; //change the value of the current node to the new value
-                 return oldValue; //return the old value
-             }
-             prev = current; //remember the previous node
-             current = current.next; //move to the next node
-         }
-         
-         size++; //increment the size of the list
-         //old key not found
-         Node newNode = new Node(key, value); //create a new node with the key and value
-         newNode.next = head; //set the new node's next to the old head
-         head = newNode; //point the head pointer to the new node
- 
-         // Update tail if the list was empty
-         if (tail == null) {
-             tail = newNode;
-         }
-         //return null if the key was not found, no old value replaced
-         return null;
-     }
 
+        if (head == null) {
+            head = newNode; // If the list is empty, set the head to the new node
+            return null; // Return null if the key was not found, no old value replaced
+        }
+
+        else {
+            newNode.next = head; // Set the new node's next to the old head
+            head = newNode; // Point the head pointer to the new node
+                    // Return null if the key was not found, no old value replaced
+        return null;
+        }
+
+
+    }
+
+    public int size() {
+        return size;
+    }
     
 
       /**
@@ -172,15 +177,8 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
 
 
     private class MoveToFrontListIterator implements Iterator<Item<K, V>> {
-        private Node current; //start at the head of the list
-        private final WorkList<Node> nodes;
-        
-        public MoveToFrontListIterator() {
-            this.nodes = new ArrayStack<Node>();
-            if (head != null) {
-                this.current = head;
-            }
-        }
+        private Node current = head; //start at the head of the list
+
         
           /**
          * Returns {@code true} if the iteration has more elements.
@@ -191,7 +189,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
          */
         @Override
         public boolean hasNext() {
-            return current != null || this.nodes.hasWork(); //if the next node is not null, there is a next node
+            return current != null; //if the next node is not null, there is a next node
         }
 
 
@@ -207,15 +205,9 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
                 throw new NoSuchElementException();
             }
 
-            while (this.current != null) {
-                this.nodes.add(this.current);
-                this.current = this.current.next;
-            }
-
-            this.current = this.nodes.next();
-            Item<K, V> item = new Item<>(this.current.key, this.current.value); //create a new item with the current node's key and value
-            this.nodes.add(this.current.next);
-            this.current = this.nodes.next();
+           
+            Item<K, V> item = new Item<K, V>(this.current.key, this.current.value); //create a new item with the current node's key and value
+            this.current = this.current.next; //move to the next node
 
             return item; //return the item
         }
