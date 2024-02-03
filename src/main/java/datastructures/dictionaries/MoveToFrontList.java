@@ -1,8 +1,12 @@
 package datastructures.dictionaries;
 
 import cse332.datastructures.containers.Item;
+import cse332.datastructures.trees.BinarySearchTree;
+import cse332.datastructures.trees.BinarySearchTree.BSTNode;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.misc.DeletelessDictionary;
+import cse332.interfaces.worklists.WorkList;
+import datastructures.worklists.ArrayStack;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -168,8 +172,13 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
 
 
     private class MoveToFrontListIterator implements Iterator<Item<K, V>> {
-        private Node current = head; //start at the head of the list
-
+        private Node current; //start at the head of the list
+        
+        public MoveToFrontListIterator() {
+            if (head != null) {
+                this.current = head;
+            }
+        }
         
           /**
          * Returns {@code true} if the iteration has more elements.
@@ -180,7 +189,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
          */
         @Override
         public boolean hasNext() {
-            return current.next != null; //if the next node is not null, there is a next node
+            return current != null; //if the next node is not null, there is a next node
         }
 
 
@@ -195,7 +204,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            
+
             Item<K, V> item = new Item<>(current.key, current.value); //create a new item with the current node's key and value
             current = current.next; //move to the next node
             return item; //return the item
