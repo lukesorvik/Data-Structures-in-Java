@@ -79,7 +79,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
     @Override
     public V insert(K key, V value) {
         if (key == null || value == null) {
-            throw new IllegalArgumentException("Key or value cannot be null");
+            throw new IllegalArgumentException();
         }
 
          // Check if the key already exists in the list
@@ -173,8 +173,10 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
 
     private class MoveToFrontListIterator implements Iterator<Item<K, V>> {
         private Node current; //start at the head of the list
+        private final WorkList<Node> nodes;
         
         public MoveToFrontListIterator() {
+            this.nodes = new ArrayStack<Node>();
             if (head != null) {
                 this.current = head;
             }
@@ -189,7 +191,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
          */
         @Override
         public boolean hasNext() {
-            return current != null; //if the next node is not null, there is a next node
+            return current != null || this.nodes.hasWork(); //if the next node is not null, there is a next node
         }
 
 
@@ -205,8 +207,16 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
                 throw new NoSuchElementException();
             }
 
-            Item<K, V> item = new Item<>(current.key, current.value); //create a new item with the current node's key and value
-            current = current.next; //move to the next node
+            while (this.current != null) {
+                this.nodes.add(this.current);
+                this.current = this.current.next;
+            }
+
+            this.current = this.nodes.next();
+            Item<K, V> item = new Item<>(this.current.key, this.current.value); //create a new item with the current node's key and value
+            this.nodes.add(this.current.next);
+            this.current = this.nodes.next();
+
             return item; //return the item
         }
     }
