@@ -67,6 +67,7 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
     //add to the end, perculate (follow insert procedure)
     @Override
     public void add(E work) {
+        
         //if the array cant fit the new element, double the size of the array
         if (size == maxsize) {
             E[] temp = (E[]) new Comparable[maxsize +10];
@@ -83,19 +84,22 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
     }
 
     //percolate up the element at the given index
-    public void percolateUp(int index) {
-        
+    //index is the index of the element that needs to be perculated up
+    public void percolateUp(int childIndex) {
+        if (childIndex < 0) {
+            return; // Exit the method if the index is out of bounds
+        }
         //use -1 since we start the heap at index 0
         //divided by 4 since we are branching by 4 each time
-        int parent = ((index + 1)/4) - 1; //find the parent of the index, java rounds down so no need to use Math.floor
-        E temp = data[index]; //store the value at the index
+        int parent = ((childIndex + 1)/4) - 1; //find the parent of the child java rounds down so no need to use Math.floor
+        E temp = data[childIndex]; //store the value at the child
 
-        //while the index is not the root and the value of the index is less than the value of the parent
-        while (index > 0 && temp.compareTo(data[parent]) < 0) { 
-            data[index] = data[parent]; //move the current parent down
-            data[parent] = temp; //set the parent to the value of the thing perculating up
-            index = parent; //set the index to the index of the parent
-            parent = ((index + 1)/4) - 1; //find the new parent
+        //while the childIndex is not the root and the value of the childIndex is less than the value of the parent
+        while (parent >= 0 && childIndex > 0 && temp.compareTo(data[parent]) < 0) { 
+            data[childIndex] = data[parent]; //set the element at childIndex to the value of the parent
+            data[parent] = temp; //set the parent to the value of the child
+            childIndex = parent; //set the childIndex to the index of the parent
+            parent = ((childIndex + 1)/4) - 1; //find the new parent of the childIndex
         }
         
     }

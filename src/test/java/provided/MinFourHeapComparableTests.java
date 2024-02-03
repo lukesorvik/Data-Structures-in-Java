@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinFourHeapComparableTests {
     private static final int SEED = 42;
 
+
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
     public void test_hasWork_empty_noWork() {
