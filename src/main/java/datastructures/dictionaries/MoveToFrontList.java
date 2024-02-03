@@ -47,6 +47,7 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
 
     private Node head = null; //pointer to first node
     private int size =0; //number of nodes in the linked list
+    //PRIVATE MEANS ONLY THIS FUNCTION CAN RETURN THE VALUE!!!!!!!!!!!!!!!!!!!!!
 
     class Node {
         K key;
