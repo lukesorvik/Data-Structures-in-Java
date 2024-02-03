@@ -16,6 +16,14 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
     private int size; //stores the amount of stuff in the array
     private int maxsize;
     //no pointers needed since it is all stored within an array
+    /*
+     * [0
+     * 1,2,3,4
+     * 5,6,7,8  9,10,11,12  13,14,15,16  17,18,19,20  ]
+     * 
+     * 
+     * 
+     */
 
 
     /*
@@ -61,7 +69,7 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
     public void add(E work) {
         //if the array cant fit the new element, double the size of the array
         if (size == maxsize) {
-            E[] temp = (E[]) new Comparable[maxsize * 2];
+            E[] temp = (E[]) new Comparable[maxsize +10];
             //copy the old array into the new array
             for (int i = 0; i < maxsize; i++) {
                 temp[i] = data[i];
@@ -92,37 +100,50 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
         
     }
 
-    //each node has 4 children, so need to compare 4 children and swap with the smallest
-    public void percolateDown (int index) {
-        
-        int leftChild = 4 * (index + 1) -1; //find the left child of the index
-        int rightChild = 4 * (index + 1); //find the left child of the index
-        E val = data[index]; //store the value at the index
+    //percolate down the element at the given parentIndex
+    public void percolateDown(int parentIndex) {
+        int leftChild = 4 * parentIndex + 1; //find the leftmost child of the parentIndex
+        E val = data[parentIndex]; //store the value at the parentIndex
 
-        while(leftChild <= size) { //until the left child is a leaf node
-            int toSwap = leftChild; //set the swap index to the left child
+        while (leftChild <= size) { //while the leftmost child is still in bounds of the array
 
-            if(data[leftChild].compareTo(data[rightChild]) < 0 ||rightChild > size) { //if the left child is less than the right child, or the right child is out of bounds(dne)
-                toSwap = leftChild; //set the swap index to the right child
-            } //now toSwap has the smaller of left/right child, or left child if right child is out of bounds
+            leftChild = 4 * parentIndex + 1; //find the leftmost child of the parentIndex
+            //since 4 nodes we know the rightmost child node will be at 4 * parentIndex + 4
 
+            val = data[parentIndex]; //store the value at the parentIndex
 
+            int toSwap = leftChild; //set the swap index to the left child by default (in case no others to swap)
+            int child = leftChild + 1; //start with the second child
+            
+            //get the smallest of the children
+            //this gets the min out of the 4 children, my using a running minimum(toswap)
+            //compare the value of each child with the value of the current smallest child
+            //3 comparisons out of 4 things so run 4-1 times
+            for (int i = 0; i < 3; i++) {
+                //if child in bounds, and the value of the child is less than the value of the current smallest child
+                if (child <= size && data[child].compareTo(data[toSwap]) < 0) {
+                    toSwap = child; //update the swap index if a smaller child is found
+                }
+                child++; //move to the next child
+            }
 
+            //if the smallest child is smaller than the parent, swap the parent and the smallest child
+            if (data[toSwap].compareTo(val) < 0) { 
+                //swap the parent and the smallest child
+                data[parentIndex] = data[toSwap]; //set the parent value to the value of the smallest child
+                data[toSwap] = val; //set the smallest child value to the value of the parent
+
+                parentIndex = toSwap; //update the parent index to the index of the smallest child
+                leftChild = 4 * parentIndex + 1; //update the left child index
+                }
+                
+                //none of the children were smaller than the parent, so the parent is in the correct position
+                else {
+                break; //if the parent is smaller than all its children, stop percolating down
+            }
         }
 
-        //use -1 since we start the heap at index 0
-        //divided by 4 since we are branching by 4 each time
-        int parent = ((index + 1)/4) - 1; //find the parent of the index, java rounds down so no need to use Math.floor
-        E temp = data[index]; //store the value at the index
 
-        //while the index is not the root and the value of the index is less than the value of the parent
-        while (index > 0 && temp.compareTo(data[parent]) < 0) { 
-            data[index] = data[parent]; //move the current parent down
-            data[parent] = temp; //set the parent to the value of the thing perculating up
-            index = parent; //set the index to the index of the parent
-            parent = ((index + 1)/4) - 1; //find the new parent
-        }
-        
     }
 
 
@@ -168,12 +189,15 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
         }
         E theMin = data[0]; //store the root/min value 
         data[0] = data[size - 1]; //set the root to the last element in the array
+        size--; //decrement the size
+
+        percolateDown(0); //perculate down the root to get the tree in the correct order
 
         //now we want to get the last element in the array and set it to the root to keep the complete tree property
         //then perculate it down to get the tree in the correct order
 
 
-        return
+        return theMin;
     }
 
 
