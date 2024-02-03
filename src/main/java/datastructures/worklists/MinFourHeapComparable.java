@@ -70,7 +70,7 @@ public class MinFourHeapComparable<E extends Comparable<E>> extends PriorityWork
         
         //if the array cant fit the new element, double the size of the array
         if (size == maxsize) {
-            E[] temp = (E[]) new Comparable[maxsize +10];
+            E[] temp = (E[]) new Comparable[maxsize *2];
             //copy the old array into the new array
             for (int i = 0; i < maxsize; i++) {
                 temp[i] = data[i];
