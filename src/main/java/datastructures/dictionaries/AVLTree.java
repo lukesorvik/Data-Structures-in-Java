@@ -142,7 +142,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
 
         int child = Integer.signum(direction + 1);
         AVLNode next = (AVLNode) node.children[child];
-        AVLNode newNode = insertRec(next, key, value); 
+        node.children[child] = insertRec(next, key, value);
 
 
         // --------------------------
@@ -187,8 +187,8 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             return rotateLeft(node);
         }
 
-        // return the changed node pointer
-        return newNode;
+        // no need to balance the tree
+        return node;
     }
 
     public AVLNode rotateRight(AVLNode node) {
