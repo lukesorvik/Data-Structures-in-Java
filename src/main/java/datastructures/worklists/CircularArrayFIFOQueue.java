@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * See cse332/interfaces/worklists/FixedSizeFIFOWorkList.java
  * for method specifications.
  */
-public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFIFOWorkList<E> {
+public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
     /*
     * Array under the hood, represented kinda like a donut
@@ -97,7 +97,7 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
     @Override
     public E peek(int i) {
         //if has work is false
-        if (!hasWork()) { //checks if this.size = 0
+        if (this.size<= 0) { //checks if this.size = 0
             throw new NoSuchElementException();
         }
 
@@ -108,7 +108,7 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
         //we want the ith element from the front of the work order
         //since circular we could have first=9 and back =3
 
-        return array[front+i % capacity]; //gets the remainder of the start of the queue / size of array
+        return array[(front+i) % capacity]; //gets the remainder of the start of the queue / size of array
         //should work if we wrap around to front
     }
 
@@ -124,7 +124,7 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
      */
     @Override
     public E next() {
-        if (!hasWork()) { //checks if this.size = 0
+        if (this.size<= 0) {
             throw new NoSuchElementException();
         }
 
@@ -184,6 +184,8 @@ public class CircularArrayFIFOQueue<E extends Comparable<E>> extends FixedSizeFI
         E[] temp = (E[])new Comparable[capacity]; //create new empty list
         array = temp; //set our main list to the empty one
         size = 0; //update working size to zero since we no longer have any valid elements
+        front = 0;
+        back = 0;
     }
 
 

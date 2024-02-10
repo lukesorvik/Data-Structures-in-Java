@@ -19,12 +19,13 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
         // constructor if they do not insert any parameters
         public HashTrieNode() {
+
             this(null);
         }
 
         public HashTrieNode(V value) {
             this.pointers = new HashMap<A, HashTrieNode>(); // java hashmap where the key is of generic type A, and the
-                                                            // value is a pointer to another hashTrieNode
+            // value is a pointer to another hashTrieNode
             // this can have as many pointers to other nodes as we want
             this.value = value; // value of the node, we use this to store the value of the node
         }
@@ -64,10 +65,12 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         for (A element : key) {
             // iterate through the key and check if the current node has a pointer to the
             // next node
-            if (!current.pointers.containsKey(element)) { // if the current char does not exist as a key
+            //.contains true if the key is in the map
+            if (!current.pointers.containsKey(element)) { // if the current char does not exist as a key in the map
                 // create a mapping for that character, point to a new hashnode
                 current.pointers.put(element, new HashTrieNode());
             }
+            //else the character does exist in the map
             // move the next node current char is pointing to
             current = current.pointers.get(element); // if the current char(key) does have a mapping, then move to the next node and test the next char
         }
@@ -95,7 +98,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
             throw new IllegalArgumentException();
         }
 
-        HashTrieNode current = (HashTrieNode) root;
+        HashTrieNode current = (HashTrieMap<A, K, V>.HashTrieNode) root;
 
         for (A elem : key) { // iterate through the key string "add" for ex
             if (!current.pointers.containsKey(elem)) { // check if current node has a pointer to the next node for "a"
@@ -124,14 +127,19 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
             throw new IllegalArgumentException();
         }
 
+
         HashTrieNode current = (HashTrieNode) root;
 
+    //
+
         for (A elem : key) {
-            if (!current.pointers.containsKey(elem)) { // if current char of key does not have a mapping                                         
+            if (!current.pointers.containsKey(elem)) { // if current char of key does not have a mapping
                 return false; // Prefix not found
             }
             current = current.pointers.get(elem); // if the current char(key) does have a mapping, then move to the next node and test the next char
         }
+
+
         // reached the end of the key string, all have mappings pointed to a node
         return true; // Prefix found
     }
