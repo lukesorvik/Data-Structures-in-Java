@@ -2,6 +2,8 @@ package datastructures.dictionaries;
 
 import java.lang.reflect.Array;
 
+import org.apache.commons.logging.impl.AvalonLogger;
+
 import cse332.datastructures.trees.BinarySearchTree;
 
 /**
@@ -81,53 +83,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
      * @throws IllegalArgumentException
      *             if key is null.
      */
-    protected AVLNode find(K key, V value) {
-
-        if(key == null) {
-            throw new IllegalArgumentException();
-        }
-
-        AVLNode prev = null;
-        AVLNode current = (AVLNode) this.root;
-
-        int child = -1;
-
-        while (current != null) { //while we haven't reached the end of the tree
-            int direction = Integer.signum(key.compareTo(current.key)); //compare the key we want to add to the current node's key
-            //if the key is less than the current node's key, direction will be -1, if it's greater, direction will be 1, if it's equal, direction will be 0
-
-            // We found the key!
-            if (direction == 0) {
-                return current; //return the current node, so we can overwrite the value
-            }
-            //did not find keep looking
-            else {
-                // direction + 1 = {0, 2} -> {0, 1}
-                child = Integer.signum(direction + 1);
-                prev = current;
-                current = (AVLNode) current.children[child];
-            }
-        }
-
-        //did not find the key, so we need to add it to the tree
-
-        // If value is not null, we need to actually add in the new value
-        if (value != null) {
-            current = new AVLNode(key, null);
-            if (this.root == null) {
-                this.root = current;
-            }
-            else {
-                assert(child >= 0); // child should have been set in the loop
-                                    // above
-                prev.children[child] = current;
-            }
-            this.size++;
-        }
-
-        return current;
-    }
-
+    
 
 
     //overwrite the insert method
@@ -147,15 +103,62 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
      *             if either key or value is null.
      */
     @Override
+    
     public V insert(K key, V value) {
-        if (key == null || value == null) {
+        if (key == null ) {
             throw new IllegalArgumentException();
         }
-        AVLNode current = find(key, value); //find the node to insert to, compare sizes of each one
-        V oldValue = current.value;
-        current.value = value;
-        return oldValue;
+
+        return insertRec(this.root, key, value); //passes our root node, key, and value to the recursive insert method
     }
+
+    //recursively find the node to insert, insert it, then on way back up, check if the tree is balanced
+    public V insertRec(AVLNode node, K key, V value) {
+        //search for the key in the tree
+        //if we find the key, overwrite the value, save the old value, and return it
+        //check if the tree is balanced on recursive up
+
+
+        if (node = null) { //base case at the end 
+            
+        }
+
+    }
+
+    public AVLNode rotateRight(AVLNode node) {
+        AVLNode left = (AVLNode) node.children[0];
+        AVLNode leftright = (AVLNode) left.children[1];
+
+        left.children[1] = node;
+        node.children[0] = leftright;
+
+        node.height = Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])) + 1;
+        left.height = Math.max(height((AVLNode) left.children[0]), height((AVLNode) left.children[1])) + 1;
+
+        return left;
+    }
+
+    public AVLNode rotateLeft(AVLNode node) {
+        AVLNode right = (AVLNode) node.children[1];
+        AVLNode rightleft = (AVLNode) right.children[0];
+
+        right.children[0] = node;
+        node.children[1] = rightleft;
+
+        node.height = Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])) + 1;
+        right.height = Math.max(height((AVLNode) right.children[0]), height((AVLNode) right.children[1])) + 1;
+
+        return right;
+    }
+
+    // Get Balance factor of node N 
+    int getBalance(Node N) { 
+        if (N == null) 
+            return 0; 
+  
+        return height(N.left) - height(N.right); 
+    } 
+
 
     /*
      * extended methods from BinarySearchTree:
