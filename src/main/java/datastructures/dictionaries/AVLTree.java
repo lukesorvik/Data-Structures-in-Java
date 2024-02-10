@@ -66,6 +66,43 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     }
 
 
+
+    //example recursive find
+    protected AVLNode find(K key, V value) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+        return findRecursive(key, value, (AVLNode) this.root);
+    }
+
+    private AVLNode findRecursive(K key, V value, AVLNode current) {
+        if (current == null) {
+            if (value != null) {
+                AVLNode newNode = new AVLNode(key, null);
+                if (this.root == null) {
+                    this.root = newNode;
+                }
+                this.size++;
+                return newNode;
+            } else {
+                return null;
+            }
+        }
+
+        int direction = Integer.signum(key.compareTo(current.key));
+        if (direction == 0) {
+            return current;
+        } else {
+            int child = Integer.signum(direction + 1);
+            AVLNode next = (AVLNode) current.children[child];
+            return findRecursive(key, value, next);
+        }
+    }
+
+
+
+
+
     //override insert method to create AVLNode instances instead of BSTNode instances
     //find method to return AVLNode instead of BSTNode
     //find the insertion location based off the tree
@@ -109,20 +146,32 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             throw new IllegalArgumentException();
         }
 
-        return insertRec(this.root, key, value); //passes our root node, key, and value to the recursive insert method
+        return insertRec((AVLNode)this.root, key, value); //passes our root node, key, and value to the recursive insert method
     }
 
     //recursively find the node to insert, insert it, then on way back up, check if the tree is balanced
+    //returns the old value if we find the key, or null if we don't find the key
     public V insertRec(AVLNode node, K key, V value) {
         //search for the key in the tree
         //if we find the key, overwrite the value, save the old value, and return it
         //check if the tree is balanced on recursive up
 
-
-        if (node = null) { //base case at the end 
-            
+        //base cases 
+        //--------------------------
+        //did not find the key, so we insert the new node
+        if (node == null) { 
+            node = new AVLNode(key, value); //create a new node with the key and value
+            this.size++; //increment the size of the tree
+            return null; //old value is null
         }
-
+        //found the key, so we overwrite the value
+        if (key.compareTo(node.key) == 0) {
+            V oldValue = node.value; //save the old value
+            node.value = value; //overwrite the old value with the new value
+            return oldValue; //return the old value
+        }
+        //--------------------------
+        //recursive cases
     }
 
     public AVLNode rotateRight(AVLNode node) {
