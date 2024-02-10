@@ -3,13 +3,14 @@ package datastructures.worklists;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.worklists.FixedSizeFIFOWorkList;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 /**
  * See cse332/interfaces/worklists/FixedSizeFIFOWorkList.java
  * for method specifications.
  */
-public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
+public class CircularArrayFIFOQueue<E extends Comparable> extends FixedSizeFIFOWorkList<E> {
 
     /*
     * Array under the hood, represented kinda like a donut
@@ -239,10 +240,30 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     @Override
     public int compareTo(FixedSizeFIFOWorkList<E> other) {
         // You will implement this method in project 2. Leave this method unchanged for project 1.
-        
-        return other.compareTo(this); //calls the other classes compare to method
+
+        //get smallest size of the two
+         //get the minimum size of the two lists
+        int minSize = Math.min(this.size(), other.size());
+
+        //iterate through the lists and compare the elements
+        //the first unequal pair of elements determines the order of the lists "lexicographically: like how dictionarry puts "apple" before "eggplant" because a comes before e"
+        for (int i = 0; i < minSize; i++) {
+            if (this.peek(i).compareTo(other.peek(i)) != 0) { //if the two elements are not the same
+                return this.peek(i).compareTo(other.peek(i)); //return the comparison of the two elements
+            }
+        }
+
+        //if we get to this point, then all the elements are the same
+        //return which list is bigger, 0 if they are the same size
+        if (this.size() > other.size()) {
+            return 1;
+        } else if (this.size() < other.size()) {
+            return -1;
+        }
+        return 0;
 
     }
+
 
 
      /**
@@ -295,7 +316,8 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
     @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
 
-
+        //instead of comparing the pointers, we want to compare the actual objects
+        //that is why we implement our own equals method
         if (this == obj) { //if pointers are the same
             return true;
         } else if (!(obj instanceof FixedSizeFIFOWorkList<?>)) { //if the object is not an instance of the same class
@@ -312,6 +334,8 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
             FixedSizeFIFOWorkList<E> other = (FixedSizeFIFOWorkList<E>) obj; //cast the object to a FixedSizeFIFOWorkList
            
+
+            //compare the sizes of the two lists
             if(this.size() != other.size()) {
                 return false;
             }
@@ -319,8 +343,9 @@ public class CircularArrayFIFOQueue<E> extends FixedSizeFIFOWorkList<E> {
 
             //since FixedSizeFIFOWorkList has an iterator, we can use that to compare the two lists
             //compare each element in the list to the other list, if one is different they are not equal
-            for (E element : other) {
-                if (element.equals(this.peek()) == false) { //if the current element is not the same as the element in the other list
+            for (int i = 0; i < this.size(); i++) {
+                if (other.peek(i).equals(this.peek(i)) == false) { //if the current element is not the same as the element in the other list
+                    //we can use .equals since fixedsizefifoworklist is implementing comparable
                     return false;
                 }
             }
