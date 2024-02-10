@@ -1,9 +1,5 @@
 package datastructures.dictionaries;
 
-import java.lang.reflect.Array;
-
-import org.apache.commons.logging.impl.AvalonLogger;
-
 import cse332.datastructures.trees.BinarySearchTree;
 
 /**
