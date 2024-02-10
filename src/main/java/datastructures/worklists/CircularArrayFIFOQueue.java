@@ -341,6 +341,7 @@ public class CircularArrayFIFOQueue<E extends Comparable> extends FixedSizeFIFOW
             }
                 
 
+            //at this point we know they have the same size, so now compare each element
             //since FixedSizeFIFOWorkList has an iterator, we can use that to compare the two lists
             //compare each element in the list to the other list, if one is different they are not equal
             for (int i = 0; i < this.size(); i++) {
