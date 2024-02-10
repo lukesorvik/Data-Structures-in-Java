@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import java.lang.reflect.Field;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,6 +68,40 @@ public class AVLTreeTests {
 		assertEquals(trueData, nestd(root));
 		assertEquals(trueCounts, nestc(root));
 	}
+
+	@Test
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void test_fuzzyInsertFind() {
+        AVLTree<Integer, Integer> tree = new AVLTree<>();
+        Random random = new Random();
+
+        // Generate random key-value pairs and insert them into the tree
+        for (int i = 0; i < 1000; i++) {
+            int key = random.nextInt(1000);
+            int value = random.nextInt(1000);
+            tree.insert(key, value);
+			assertEquals(value, tree.find(key));
+        }
+
+    }
+
+
+	@Test
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void findnonExist() {
+        AVLTree<Integer, Integer> tree = new AVLTree<>();
+        Random random = new Random();
+
+        // Generate random key-value pairs and insert them into the tree
+        for (int i = 0; i < 10; i++) {
+            int key = random.nextInt(100);
+            int value = 1;
+            tree.insert(key, value);
+        }
+
+            assertEquals(null, tree.find(2000));
+
+    }
 
 	public String nestd(BSTNode root) {
 		if(root == null)
