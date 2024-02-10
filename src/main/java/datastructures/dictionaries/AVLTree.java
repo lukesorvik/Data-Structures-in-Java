@@ -102,9 +102,8 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
 
         V oldval = find(key); // get the old value of the key
-        this.root = insertRec((AVLNode) this.root, key, value); // passes our root node, key, and value to the recursive
-                                                                // insert method
-        // returns the root after the insert and the tree has been balanced
+        this.root = insertRec((AVLNode) this.root, key, value); // passes our root node, key, and value to the recursive insert method
+        //returns the root after the insert and after the tree has been balanced
 
         return oldval; // return the old value
 
@@ -133,55 +132,55 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
         // --------------------------
         // recursive cases
-        // should not reach this point if we found the key, so direction should not be
-        // 0, should be -1 or 1
-        // compare the key to the current node's children recursively go in that
-        // direction
+        // should not reach this point if we found the key, so direction should not be 0,-1,1
+        
 
-        int direction = Integer.signum(key.compareTo(node.key));
 
-        int child = Integer.signum(direction + 1);
-        AVLNode next = (AVLNode) node.children[child];
-        node.children[child] = insertRec(next, key, value);
+        int direction = Integer.signum(key.compareTo(node.key)); // compare the key to the current node and call recursively in that direction
+        //if -1 then key <node.key, if 1 then key > node.key, if 0 then key = node.key
+
+        int child = Integer.signum(direction + 1); //to get the direction to be [0,1] instead of [-1,1], signum(-1+1) = 0, signum(1+1) = 1, any positive value = 1
+        AVLNode next = (AVLNode) node.children[child]; //get the next node to go to based off the direction
+        node.children[child] = insertRec(next, key, value); //call the child node to insert, update this node's child with the new node returned
 
 
         // --------------------------
-        // this is after it has been inserted, so we need to check if the tree is
-        // balanced, starting from the node we inserted from
-        // check if the tree is balanced
+        // this is after it has been inserted, so we need to check if the tree is balanced, starting from the node we just inserted from
+        // check if the tree is balanced, working from the bottom up using the path we took to insert the node
 
-        /* 2. Update height of this ancestor node */
-         //set the height of the current node to 1 + the max height of the left and right children
-        node.height = 1 + Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])); 
-       
+        node.height = 1 + Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])); //set the height of the current node to 1 + the max height of the left and right children
+        int balance = getBalance(node);  //Check the current node if any .right or .left children differ by a size of 1
+        //-1 means the right child is larger, 0 means they are the same, 1 means the left child is larger
 
-        /*
-         * 3. Get the balance factor of this ancestor
-         * node to check whether this node became
-         * unbalanced
-         */
-        int balance = getBalance(node);
+        // If this node becomes unbalanced, then there are 4 cases:
 
-        // If this node becomes unbalanced, then there
-        // are 4 cases Left Left Case
+        // Left Left Case
+        //balance > 1 means the left child was imbalanced
+        //&& if the key is less than the left child's key, then we need to rotate right (we added in the left subtree of left child)
         if (balance > 1 && key.compareTo(((AVLNode) node.children[0]).key) < 0) {
             return rotateRight(node);
         }
 
 
         // Right Right Case
+        //balance < -1 means one the right child was imbalanced
+        //&& if the key is greater than the right child's key, then we need to rotate left (we added in the right subtree of right child)
         if (balance < -1 && key.compareTo(node.children[1].key) > 0) {
             return rotateLeft(node);
         }
 
 
         // Left Right Case
+        //balance > 1 means the left child was imbalanced
+        //&& if the key is greater than the left child's key, then we need to we added in the right subtree of left child
         if (balance > 1 && key.compareTo(node.children[0].key) > 0) {
             node.children[0] = rotateLeft((AVLNode) node.children[0]);
             return rotateRight(node);
         }
 
         // Right Left Case
+        //balance < -1 means one the right child was imbalanced
+        //&& if the key is less than the right child's key, then we need to rotate right (we added in the left subtree of right child)
         if (balance < -1 && key.compareTo(node.children[1].key) < 0) {
             node.children[1] = rotateRight((AVLNode) node.children[1]);
             return rotateLeft(node);
@@ -217,7 +216,8 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         return right;
     }
 
-    // Get Balance factor of node N
+    // Get the difference in height between the left and right children
+    //-1 means the right child is larger, 0 means they are the same, 1 means the left child is larger
     int getBalance(AVLNode N) {
         if (N == null)
             return 0;
