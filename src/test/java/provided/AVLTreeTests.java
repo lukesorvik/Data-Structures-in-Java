@@ -98,7 +98,7 @@ public class AVLTreeTests {
             int value = 1;
             tree.insert(key, value);
         }
-			tree.preOrder(tree);
+	
             assertEquals(null, tree.find(2000));
 
     }

@@ -224,17 +224,4 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         return height((AVLNode) N.children[0]) - height((AVLNode) N.children[1]);
     }
 
-    //used for debugging what the tree looks like
-    public void preOrder(AVLTree node) {
-        preOrder((AVLNode)this.root);
-    }
-
-    public void preOrder(AVLNode node) {
-        if (node != null) {
-            System.out.print(node.key + "  \n");
-            preOrder((AVLNode) node.children[0]);
-            preOrder((AVLNode) node.children[1]);
-        }
-    }
-
 }
