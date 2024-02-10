@@ -94,14 +94,16 @@ public class AVLTreeTests {
 
         // Generate random key-value pairs and insert them into the tree
         for (int i = 0; i < 10; i++) {
-            int key = random.nextInt(100);
+            int key = random.nextInt(10);
             int value = 1;
             tree.insert(key, value);
         }
-
+			tree.preOrder(tree);
             assertEquals(null, tree.find(2000));
 
     }
+
+
 
 	public String nestd(BSTNode root) {
 		if(root == null)

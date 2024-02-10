@@ -199,12 +199,14 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         return left;
     }
 
-    public AVLNode rotateLeft(AVLNode node) {
-        AVLNode right = (AVLNode) node.children[1];
-        AVLNode rightleft = (AVLNode) right.children[0];
 
-        right.children[0] = node;
-        node.children[1] = rightleft;
+    //at current node rotate left
+    public AVLNode rotateLeft(AVLNode node) {
+        AVLNode right = (AVLNode) node.children[1]; //get the right child
+        AVLNode rightleft = (AVLNode) right.children[0]; //get the left child of the right child
+
+        right.children[0] = node; //set the left = root
+        node.children[1] = rightleft; //set the 
 
         node.height = Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])) + 1;
         right.height = Math.max(height((AVLNode) right.children[0]), height((AVLNode) right.children[1])) + 1;
@@ -219,6 +221,19 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             return 0;
 
         return height((AVLNode) N.children[0]) - height((AVLNode) N.children[1]);
+    }
+
+    //used for debugging what the tree looks like
+    public void preOrder(AVLTree node) {
+        preOrder((AVLNode)this.root);
+    }
+
+    public void preOrder(AVLNode node) {
+        if (node != null) {
+            System.out.print(node.key + "  \n");
+            preOrder((AVLNode) node.children[0]);
+            preOrder((AVLNode) node.children[1]);
+        }
     }
 
 }
