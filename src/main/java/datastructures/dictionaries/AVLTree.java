@@ -147,6 +147,10 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
 
         return insertRec((AVLNode)this.root, key, value); //passes our root node, key, and value to the recursive insert method
+
+
+
+
     }
 
     //recursively find the node to insert, insert it, then on way back up, check if the tree is balanced
@@ -172,6 +176,54 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
         //--------------------------
         //recursive cases
+        //should not reach this point if we found the key, so direction should not be 0, should be -1 or 1
+        //compare the key to the current node's children recursively go in that direction
+
+        int direction = Integer.signum(key.compareTo(node.key));
+
+
+        int child = Integer.signum(direction + 1);
+        AVLNode next = (AVLNode) node.children[child];
+        return insertRec(next, key, value);
+
+        //--------------------------
+        //this is after it has been inserted, so we need to check if the tree is balanced, starting from the node we inserted from
+        //check if the tree is balanced
+        
+           /* 2. Update height of this ancestor node */
+           node.height = 1 + Math.max(height((AVLNode) node.children[0]), 
+           height((AVLNode) node.children[1])); 
+
+            /* 3. Get the balance factor of this ancestor 
+            node to check whether this node became 
+            unbalanced */
+            int balance = getBalance(node); 
+
+            // If this node becomes unbalanced, then there 
+            // are 4 cases Left Left Case 
+            if (balance > 1 && key.compareTo(node.children[0].key) < 0) 
+            return rotateRight(node); 
+
+            // Right Right Case 
+            if (balance < -1 && key.compareTo(node.children[1].key) > 0) 
+            return rotateLeft(node); 
+
+            // Left Right Case 
+            if (balance > 1 && key.compareTo(node.children[0].key) > 0) { 
+            node.children[0] = rotateLeft((AVLNode) node.children[0]); 
+            return rotateRight(node); 
+            } 
+
+            // Right Left Case 
+            if (balance < -1 && key.compareTo(node.children[1].key) < 0) { 
+            node.children[1] = rotateRight((AVLNode) node.children[1]); 
+            return rotateLeft(node); 
+            } 
+
+            /* return the (unchanged) node pointer */
+            return node; 
+            } 
+
     }
 
     public AVLNode rotateRight(AVLNode node) {
@@ -201,11 +253,11 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     }
 
     // Get Balance factor of node N 
-    int getBalance(Node N) { 
+    int getBalance(AVLNode N) { 
         if (N == null) 
             return 0; 
   
-        return height(N.left) - height(N.right); 
+        return height((AVLNode)N.children[0]) - height((AVLNode)N.children[1]); 
     } 
 
 
