@@ -53,10 +53,10 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
             @Override
             public Entry<A, HashTrieNode> next() {
-                Item<A, HashTrieNode> next = chainIterator.next(); //get the next item from the chaining hash table iterator
+                Item<A, HashTrieNode> next = chainIterator.next(); //get the next item from the chaining hash table iterator, (find where our next entry is in the chaining hash table)
                 Entry<A, HashTrieNode> returnEntry =  new AbstractMap.SimpleEntry<>(next.key, next.value); 
-                //create a new entry with the key and value of the next item, gets the key and value from the iterator
-                //and returns it as an entry
+                //the hash map is a collection of entries <key, value> so instead of returning the iterator, we return the next entry <key, value> in the map
+                //return the next entry in the map
                 
                  return returnEntry;
 
@@ -65,14 +65,6 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         }
             
 
-            /*
-        //implement this!!!
-        @Override
-        public Iterator<Entry<A, HashTrieMap<A, K, V>.HashTrieNode>> iterator() {
-            return pointers.entrySet().iterator();
-        }
-        old iterator
-             */
     }
 
     // constructor four our HashTrieMap
