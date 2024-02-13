@@ -1,13 +1,16 @@
 package datastructures.dictionaries;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cse332.datastructures.containers.Item;
 import cse332.exceptions.NotYetImplementedException;
 import cse332.interfaces.trie.TrieMap;
 import cse332.types.BString;
+import datastructures.dictionaries.*;
 
 /**
  * See cse332/interfaces/trie/TrieMap.java
@@ -15,7 +18,7 @@ import cse332.types.BString;
  * for method specifications.
  */
 public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> extends TrieMap<A, K, V> {
-    public class HashTrieNode extends TrieNode<Map<A, HashTrieNode>, HashTrieNode> {
+    public class HashTrieNode extends TrieNode<ChainingHashTable<A, HashTrieNode>, HashTrieNode> {
 
         // constructor if they do not insert any parameters
         public HashTrieNode() {
@@ -24,16 +27,52 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         }
 
         public HashTrieNode(V value) {
-            this.pointers = new HashMap<A, HashTrieNode>(); // java hashmap where the key is of generic type A, and the
+
+            //this.pointers = new HashMap<A, HashTrieNode>(); // java hashmap where the key is of generic type A, and the
+            this.pointers = new ChainingHashTable<>(MoveToFrontList::new); 
             // value is a pointer to another hashTrieNode
             // this can have as many pointers to other nodes as we want
             this.value = value; // value of the node, we use this to store the value of the node
         }
 
+        public Iterator<Entry<A, HashTrieNode>> iterator() { //define the iterator method for a hashTrieNode
+            return new HashTrieNodeIterator(); //call the iterator class
+        }
+
+
+        //iterator class for the hashTrieNode
+        private class HashTrieNodeIterator implements Iterator<Entry<A, HashTrieNode>> {
+            Iterator<Item<A, HashTrieNode>> chainIterator = pointers.iterator(); 
+            //creates an Chaining hash table iterator for the pointers (since our pointers are a chaining hash table object) (each pointer is Item<A,HashTrieNode>)
+           
+           
+            @Override
+            public boolean hasNext() { //checks if the iterator has a next value
+                return chainIterator.hasNext(); //use the chaining hash table iterator to check if it has a next value
+            }
+
+            @Override
+            public Entry<A, HashTrieNode> next() {
+                Item<A, HashTrieNode> next = chainIterator.next(); //get the next item from the chaining hash table iterator
+                Entry<A, HashTrieNode> returnEntry =  new AbstractMap.SimpleEntry<>(next.key, next.value); 
+                //create a new entry with the key and value of the next item, gets the key and value from the iterator
+                //and returns it as an entry
+                
+                 return returnEntry;
+
+            }
+        
+        }
+            
+
+            /*
+        //implement this!!!
         @Override
         public Iterator<Entry<A, HashTrieMap<A, K, V>.HashTrieNode>> iterator() {
             return pointers.entrySet().iterator();
         }
+        old iterator
+             */
     }
 
     // constructor four our HashTrieMap
@@ -66,13 +105,13 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
             // iterate through the key and check if the current node has a pointer to the
             // next node
             //.contains true if the key is in the map
-            if (!current.pointers.containsKey(element)) { // if the current char does not exist as a key in the map
+            if (current.pointers.find(element) == null) { // if the current char does not exist as a key in the map
                 // create a mapping for that character, point to a new hashnode
-                current.pointers.put(element, new HashTrieNode());
+                current.pointers.insert(element, new HashTrieNode());
             }
             //else the character does exist in the map
             // move the next node current char is pointing to
-            current = current.pointers.get(element); // if the current char(key) does have a mapping, then move to the next node and test the next char
+            current = current.pointers.find(element); // if the current char(key) does have a mapping, then move to the next node and test the next char
         }
 
         V oldValue = current.value; // store the old value of the node
@@ -100,11 +139,11 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
         HashTrieNode current = (HashTrieMap<A, K, V>.HashTrieNode) root;
 
-        for (A elem : key) { // iterate through the key string "add" for ex
-            if (!current.pointers.containsKey(elem)) { // check if current node has a pointer to the next node for "a"
+        for (A itrkey : key) { // iterate through the key string "add" for ex
+            if (current.pointers.find(itrkey) == null) { // check if current node has a pointer to the next node for "a"
                 return null; // Key not found
             }
-            current = current.pointers.get(elem); // if the current char(key) does have a mapping, then move to the next node and test the next char
+            current = current.pointers.find(itrkey); // if the current char(key) does have a mapping, then move to the next node and test the next char
         }
         // reached the end of the key string, so return the value of the node
         return current.value;
@@ -133,10 +172,10 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     //
 
         for (A elem : key) {
-            if (!current.pointers.containsKey(elem)) { // if current char of key does not have a mapping
+            if (current.pointers.find(elem) == null ) { // if current char of key does not have a mapping (could not find the value associated with the key in the map)
                 return false; // Prefix not found
             }
-            current = current.pointers.get(elem); // if the current char(key) does have a mapping, then move to the next node and test the next char
+            current = current.pointers.find(elem); // if the current char(key) does have a mapping, then move to the next node and test the next char
         }
 
 
@@ -173,7 +212,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
         else {
             A elem = iterator.next(); // curent char of the key
-            HashTrieNode child = node.pointers.get(elem); // get the child node of the current char
+            HashTrieNode child = node.pointers.find(elem); // get the child node of the current char
 
             // if child is null then the path we are trying to remove does not exist
             // will cause null pointer if we try to treat a null object as a node
@@ -186,7 +225,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
                 // If the child node has no children and its value is null, remove it from the
                 // parent's pointers
                 if (child.pointers.isEmpty() && child.value == null) {
-                    node.pointers.remove(elem);
+                    node.pointers.delete(elem);
                 }
                 // else: it has children or a value, so do not remove it
             }

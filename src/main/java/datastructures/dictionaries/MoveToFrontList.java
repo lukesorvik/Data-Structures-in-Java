@@ -23,6 +23,9 @@ import java.util.NoSuchElementException;
  * element in the list. When implementing your iterator, you should
  * NOT copy every item to another dictionary/list and return that
  * dictionary/list's iterator.
+ * 
+ * linked list that stores keys and values
+ * 
  */
 public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
     /*
