@@ -358,7 +358,14 @@ public class CircularArrayFIFOQueue<E extends Comparable> extends FixedSizeFIFOW
 
     @Override
     public int hashCode() {
-        // You will implement this method in project 2. Leave this method unchanged for project 1.
-        throw new NotYetImplementedException();
+        int result = 0;
+        //get the sum of elements in the curcular array
+        for (int i = 0; i < size; i++) {
+            if (array[i] != null) { //if the element is not null
+                result += array[i].hashCode(); //get the hashcode of the element and add it to the result
+            }
+
+        }
+        return result;
     }
 }

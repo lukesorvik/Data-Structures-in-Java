@@ -41,7 +41,9 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         //doesnt have to be a linked list
         //supplier is expected to return a new instance of the dictionary each time we use .get
         bucket = new Dictionary[11]; //initialize the bucket with a size of 11 (the first prime number in the PRIME_SIZES array)
-        int capacity = PRIME_SIZES[primeIndex]; //used for hashing
+        capacity = PRIME_SIZES[primeIndex]; //used for hashing
+        size = 0;
+        loadFactor = 0;
     }
 
      /**
@@ -113,6 +115,12 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
         //iterate through the dictionary there to find the key? or use the .find of the dictionary
 
+        if (bucket[index] == null) { //if the dictionary at the index i is null
+            return null; //return null
+        }
+
+        //else the dictionary at the index i is not null, so we can call find on it
+
         V value = bucket[index].find(key); //use the dictionaries implementation of find to get the value from the dictionary
 
         return value;  //return the value
@@ -145,7 +153,8 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
      */
         @Override
         public boolean hasNext() {
-            if (bucketIndex == -1 || bucketIterator.hasNext() == false) { //if the bucket index is 0 or the current iterator has no more elements
+            //if we haven't looked for a bucket or the current buck has no more elements
+            if (bucketIndex == -1 || bucketIterator.hasNext() == false) {
                 getNextBucket(); //get the next bucket
                 //should go to the next bucket that has an object, if not next bucket then will end on the last bucket
             }
@@ -187,14 +196,19 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         //gets the next bucket that has an object, if no next bucket exists then it will end on the last bucket
         public void getNextBucket() {
             //this runs when bucketIndex is -1, will find the first bucket that has an object
-            if (bucketIterator == null || bucketIterator.hasNext() == false) { //if the current index does not have chain or the current chain does not have a next element
+            if (bucketIndex < capacity || bucketIterator == null || bucketIterator.hasNext() == false) { //if the current index does not have chain or the current chain does not have a next element
                 bucketIndex++;
                 //while we are in the bouunds of array, and the current index does not have a chain or the current chain is empty
-                while (bucketIndex < capacity && (bucket[bucketIndex] == null || !bucket[bucketIndex].isEmpty())) {
+                while (bucketIndex < capacity && (bucket[bucketIndex] == null || bucket[bucketIndex].isEmpty() == true)) {
                     bucketIndex++; //go to the next index
+
                 }
-                //set the current iterator to the iterator of the dictionary at the current index
-                bucketIterator = bucket[bucketIndex].iterator();
+                if (bucketIndex >= capacity) { //if the index is greater than the capacity
+                    bucketIterator = null; //set the iterator to null, so we dont do a null pointer moment
+                    return; //get outa here
+                }
+                bucketIterator = bucket[bucketIndex].iterator(); //set the iterator of the current bucket
+                
             }
             
         }
@@ -223,7 +237,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     //returns the index where the key should hash to
     public int hash(K key) {
         int hashval = key.hashCode(); //gets the hashcode of the key
-        hashval %= capacity; //mod the hashcode by the capacity of the hashtable
+        hashval = hashval % capacity; //mod the hashcode by the capacity of the hashtable
 
         if (hashval < 0) {
             hashval += capacity; //if the hashval is negative, add the capacity to it
@@ -264,6 +278,11 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
 
 
     }
+
+    public int size() {
+        return this.size;
+    }
+
 
 
 }
