@@ -359,10 +359,13 @@ public class CircularArrayFIFOQueue<E extends Comparable> extends FixedSizeFIFOW
     @Override
     public int hashCode() {
         int result = 0;
+        int relativelyPrime = 31; //relatively prime number to use for hashing, maybe make function to check for gcd if tests dont pass
+        //cannot be a multiple of the size of hash table
+
         //get the sum of elements in the curcular array
         for (int i = 0; i < size; i++) {
             if (array[i] != null) { //if the element is not null
-                result += array[i].hashCode(); //get the hashcode of the element and add it to the result
+                result += array[i].hashCode() * Math.pow(relativelyPrime, i); //get the hashcode of the element and add it to the result
             }
 
         }
