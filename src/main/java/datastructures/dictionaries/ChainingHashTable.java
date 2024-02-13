@@ -130,13 +130,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     /**
      * An iterator over the keys of the map
      * iterate over the chaining hashmap?
-     * 
+     * d
      * go to index 0, iterate through all keys in that dictionary in the bucket, then go to the next index
      */
     @Override
     public Iterator<Item<K, V>> iterator() {
 
-        //constructor method for the iterator
+        //class for the iterator within the iterator method 
         Iterator ArrayIterator = new Iterator() {
             int bucketIndex = -1; //the index of the bucket we are currently at, initialize at 0 so we can tell if it is the first time we are calling the iterator
             Iterator<Item<K, V>> bucketIterator; //the iterator of the dictionary at the current index
