@@ -14,7 +14,14 @@ This stage takes O(N) time. We then perform N deleteMin operations. The elements
 the heap smallest first, in sorted order. By recording these elements in a second array and
 then copying the array back, we sort N elements. Since each deleteMin takes O(logN) time,
 the total running time is O(N logN).
- * 
+ *
+ *
+ * idea:
+ * -add each element to the min heap, constructed with our custom comparator
+ * -the min heap auto sorts the array as it is added and remove (top is guarenteed to be the smallest)
+ * -then for the length of the heap, remove the top (min) and put it into place of our inputed array
+ * -since everytime we remove the heap perculates up the min we will always pop in the correct order
+ *
  * 
  */
 public class HeapSort {
