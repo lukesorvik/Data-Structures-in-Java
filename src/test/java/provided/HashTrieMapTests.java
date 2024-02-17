@@ -15,6 +15,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HashTrieMapTests {
 
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void empty() {
+        HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
+        assertEquals(false, STUDENT.findPrefix(a("")));
+    }
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void addoncesize() {
+        HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
+        STUDENT.insert(a("a"), "a");
+        assertEquals(1, STUDENT.size());
+    }
+
     /**
      * Tests if insert, find, and findPrefix work in general.
      */

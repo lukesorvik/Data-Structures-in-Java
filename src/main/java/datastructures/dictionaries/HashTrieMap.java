@@ -18,6 +18,7 @@ import datastructures.dictionaries.*;
  * for method specifications.
  */
 public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> extends TrieMap<A, K, V> {
+
     public class HashTrieNode extends TrieNode<ChainingHashTable<A, HashTrieNode>, HashTrieNode> {
 
         // constructor if they do not insert any parameters
@@ -66,11 +67,13 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
             
 
     }
+    int size = 0; // size of the map
 
     // constructor four our HashTrieMap
     public HashTrieMap(Class<K> KClass) {
         super(KClass);
         this.root = new HashTrieNode();
+        size = 0;
     }
 
     /**
@@ -108,7 +111,7 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
         V oldValue = current.value; // store the old value of the node
         if (oldValue == null) { // cannot insert null, so if it is a new node, will have node value
-            this.size++; // this was correct!!!
+            size++; // this was correct!!!
         }
         current.value = value; // set the value of the node to the new value
         return oldValue;
@@ -154,8 +157,14 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     @Override
     public boolean findPrefix(K key) {
 
+       
+
         if (key == null) {
             throw new IllegalArgumentException();
+        }
+
+        if (size == 0) {
+            return false;
         }
 
 
@@ -198,8 +207,13 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         // base case
         if (remainingSize == 0) {
             // Reached the end of the key
+
+            if(node.value != null) { //if we are actually removing a value
+                this.size--; // decrement the size of the map
+            }
+
             node.value = null; // Set the value of the current node to null
-            this.size--; // since we removed the value, not remove a key
+            
         }
 
         else {
@@ -235,5 +249,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
         HashTrieNode temp = (HashTrieMap<A, K, V>.HashTrieNode) this.root;
         temp.pointers.clear(); // clear the pointers of the root node
         this.size = 0;
+    }
+
+    public int size(){
+        return size;
     }
 }
