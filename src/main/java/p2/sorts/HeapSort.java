@@ -23,6 +23,9 @@ the total running time is O(N logN).
  * -since everytime we remove the heap perculates up the min we will always pop in the correct order
  *
  * 
+ * 
+ * 
+ * 
  */
 public class HeapSort {
     public static <E extends Comparable<E>> void sort(E[] array) {
