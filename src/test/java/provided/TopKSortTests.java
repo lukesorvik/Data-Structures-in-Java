@@ -96,6 +96,47 @@ public class TopKSortTests {
 			assertEquals(arr_sorted[i], arr[i]);
 		}
 
+		}
 	}
-}
+
+
+	//test for when k is greater than the array size
+	//run 100 times
+	//each with random ints and random array size
+	@Test()
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+	public void fuzzyKgreater() {
+		for (int j = 0; j < 100; j++) {
+			
+		Random rand = new Random();
+
+		int K = rand.nextInt(10)+100; //random K
+
+		int arraySize = rand.nextInt(20) +10; //lower bound of 10, k is always less than array size
+		Integer[] arr = new Integer[arraySize]; //create an array of random size
+
+		//fill the array with random integers
+		for (int i = 0; i < arraySize; i++) {
+			arr[i] = rand.nextInt(100);
+		}
+		Integer[] arr_sorted = arr.clone(); //clone the array
+		Arrays.sort(arr_sorted); // sort the array in descending order
+
+		Integer[] old = arr_sorted.clone();
+
+		
+
+		// Cut the array to size K
+		arr_sorted = Arrays.copyOfRange(arr_sorted, 0, arr_sorted.length);
+
+		//System.out.println(Arrays.toString(arr));
+
+		TopKSort.sort(arr, K, Integer::compareTo);
+
+		for (int i = 0; i < arraySize; i++) {
+			assertEquals(arr_sorted[i], arr[i]);
+		}
+
+		}
+	}
 }

@@ -36,6 +36,10 @@ public class TopKSort {
         WorkList<E> minHeap = new MinFourHeap<>(comparator); 
         //this should give it a max heap
 
+        if (k>array.length) {
+            k = array.length;
+        }
+
         //add each element to the minheap of size k, set the current index to null
         for (int i =0; i< array.length; i++) {
             
