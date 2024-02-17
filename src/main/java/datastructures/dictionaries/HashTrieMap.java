@@ -231,7 +231,9 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
      */
     @Override
     public void clear() {
-        this.root = new HashTrieNode();
+
+        HashTrieNode temp = (HashTrieMap<A, K, V>.HashTrieNode) this.root;
+        temp.pointers.clear(); // clear the pointers of the root node
         this.size = 0;
     }
 }

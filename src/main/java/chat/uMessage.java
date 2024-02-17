@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 public class uMessage {
     private static final int N = 3;
     private static final String CORPUS = "corpus/dictionary.txt";
+            //"corpus/dictionary.txt";
     // Use .binarySearchTreeConstructor(); if you want to test things since it is an implementation we provide and is guaranteed to work
     // Other examples:
     // .trieConstructor(NGram.class);
