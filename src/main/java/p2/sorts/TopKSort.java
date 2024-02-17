@@ -49,6 +49,7 @@ public class TopKSort {
         //run as long as i is less than k, and as long as minheap has elements (in case k > array.length)
         while (i<k && minHeap.size()>0) {
             array[i] = minHeap.next(); //set the ith index to the ith largest element
+            i++;
         }
     }
 
