@@ -100,8 +100,17 @@ public class QuickSort {
     }
 
 
-    //using the find median
-    //start = start index of partition, and end = end index of partition
+
+    /*
+    using the find median
+    start = start index of partition, and end = end index of partition
+    for the center to be the median:
+    start< center < end
+    So we check 3 things
+    if (start > center) swap so start < center
+    if (end < start) swap so end > start
+    if (end < center) swap so center < end
+     */
     public static <E> int findPivot(E[] array, int start, int end, Comparator<E> comparator) {
         int center = (start + end) /2;
 
@@ -115,8 +124,8 @@ public class QuickSort {
         if (comparator.compare(array[end], array[start]) < 0) {
             swap(array, start, end );
         }
-        //if the end is less than the center swap
-        if (comparator.compare(array[end], array[center]) < 0) {
+        //if the center is greater than the end
+        if (comparator.compare(array[center], array[end]) > 0) {
             swap(array, center, end );
         }
 
