@@ -12,8 +12,11 @@ public class TopKSort {
     }
 
     /* 
-     * finds the k largest items in O(nlogn)
+     * finds the k largest items in O(nlogk)
      * so if k=3 returns the 3 largest items from the array in any order
+     * 
+     * O(N) since we need to iterate through the array to heapify all the elements
+     * O(logK) since the heap never goes past size k, we only need to iterate logK levels to get k largest items
      * 
      * 
      * solution:
@@ -40,8 +43,11 @@ public class TopKSort {
             array[i] = null; //set the element to null
         }
 
+        int i =0;
+
         //iterate through the min heap, pop the top element (should be the least i+! largest element until i<k)
-        for (int i =0; i < k; i++) {
+        //run as long as i is less than k, and as long as minheap has elements (in case k > array.length)
+        while (i<k && minHeap.size()>0) {
             array[i] = minHeap.next(); //set the ith index to the ith largest element
         }
     }
