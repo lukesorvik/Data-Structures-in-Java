@@ -30,15 +30,28 @@ public class TopKSort {
      * then pop k elements from the max heap and add to the first k-1 indicews 
     */
     public static <E> void sort(E[] array, int k, Comparator<E> comparator) {
-        WorkList<E> maxHeap = new MinFourHeap<>(comparator.reversed()); //reverse the comparator so that if x<y if will thing y<x
+        WorkList<E> minHeap = new MinFourHeap<>(comparator); 
         //this should give it a max heap
 
-        for (E element: array) {
+        //add each element to the minheap of size k, set the current index to null
+        for (int i =0; i< array.length; i++) {
+            
+            add(minHeap, array[i], k);
+            array[i] = null; //set the element to null
+        }
 
+        for (int i =0; i < k; i++) {
+            array[i] = minHeap.next(); //set the ith index to the ith largest element
         }
     }
 
-    public void add(E element) {
-        
+    //add the element to the heap, keeping the size of the heap at size<k
+    public static <E> void add(WorkList<E> minheap, E element, int k) {
+        minheap.add(element); //add the element to the heap, smallest item guarenteed to be at the top
+
+        //if the size of the heap is greater than how many greatest elements we want, remove the minimum, keep size k
+        if (minheap.size() > k) {
+            minheap.next(); //return and remove min element
+        }
     }
 }
