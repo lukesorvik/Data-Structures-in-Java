@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Timeout;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +28,99 @@ public class HashTrieMapTests {
         HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
         STUDENT.insert(a("a"), "a");
         assertEquals(1, STUDENT.size());
+    }
+    
+    /**
+     * Fuzzy testing to check if the map behaves correctly with random inputs.
+     */
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void test_fuzzyTesting() {
+        HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
+        Map<AlphabeticString, String> referenceMap = new HashMap<>();
+
+        // Generate random inputs
+        Random random = new Random();
+        for (int i = 0; i < 1000; i++) {
+            AlphabeticString key = generateRandomKey();
+            String value = generateRandomValue();
+            
+            // Insert into both the student map and the reference map
+            STUDENT.insert(key, value);
+            referenceMap.put(key, value);
+        }
+
+        // Verify that the student map and the reference map have the same size
+        assertEquals(referenceMap.size(), STUDENT.size());
+
+        // Verify that all keys in the reference map can be found in the student map
+        for (AlphabeticString key : referenceMap.keySet()) {
+            assertTrue(STUDENT.find(key) != null);
+        }
+
+        // Verify that all keys not in the reference map cannot be found in the student map
+        for (int i = 0; i < 1000; i++) {
+            AlphabeticString key = generateRandomKey();
+            if (!referenceMap.containsKey(key)) {
+                assertTrue(STUDENT.find(key) == null);
+            }
+        }
+    }
+
+    @Test()
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void test_fuzzyTestingclear() {
+        HashTrieMap<Character, AlphabeticString, String> STUDENT = new HashTrieMap<>(AlphabeticString.class);
+        Map<AlphabeticString, String> referenceMap = new HashMap<>();
+
+        // Generate random inputs
+        Random random = new Random();
+        for (int i = 0; i < 1000; i++) {
+            AlphabeticString key = generateRandomKey();
+            String value = generateRandomValue();
+            
+            // Insert into both the student map and the reference map
+            STUDENT.insert(key, value);
+            referenceMap.put(key, value);
+        }
+
+
+
+
+        // Verify that the student map and the reference map have the same size
+        assertThrows(UnsupportedOperationException.class, () -> {
+            STUDENT.clear();
+        });
+
+
+    }
+
+    /**
+     * Generates a random AlphabeticString key.
+     */
+    private AlphabeticString generateRandomKey() {
+        Random random = new Random();
+        int length = random.nextInt(10) + 1; // Random length between 1 and 10
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            char c = (char) (random.nextInt(26) + 'a'); // Random lowercase letter
+            sb.append(c);
+        }
+        return new AlphabeticString(sb.toString());
+    }
+
+    /**
+     * Generates a random value.
+     */
+    private String generateRandomValue() {
+        Random random = new Random();
+        int length = random.nextInt(10) + 1; // Random length between 1 and 10
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            char c = (char) (random.nextInt(26) + 'a'); // Random lowercase letter
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     /**

@@ -170,8 +170,6 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
 
         HashTrieNode current = (HashTrieNode) root;
 
-    //
-
         for (A elem : key) {
             if (current.pointers.find(elem) == null ) { // if current char of key does not have a mapping (could not find the value associated with the key in the map)
                 return false; // Prefix not found
@@ -246,7 +244,11 @@ public class HashTrieMap<A extends Comparable<A>, K extends BString<A>, V> exten
     @Override
     public void clear() {
 
-        this.root = new HashTrieNode();
+        HashTrieNode temp = (HashTrieMap<A, K, V>.HashTrieNode) this.root;
+
+        //for some reason this works for the test test_clear_oneElement_throwsException()
+        temp.pointers.clear(); // clear the pointers of the root node
+        //since using chaining hash and it is deletelessdictionary it will throw an exception
         this.size = 0;
     }
 
