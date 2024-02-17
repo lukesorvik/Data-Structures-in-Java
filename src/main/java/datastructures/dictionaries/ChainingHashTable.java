@@ -55,6 +55,11 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         loadFactor = 0;
     }
 
+    // used for testing
+    public void insert( Dictionary<K, V> oldDictionary, int index) {
+        bucket[index] = oldDictionary;
+    }
+
     /**
      * Associates the specified value with the specified key in this map. If the
      * map previously contained a mapping for the key, the old value is
@@ -271,24 +276,18 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
             capacity = capacity * 2; //if the prime index is greater than the length of the PRIME_SIZES array, double the capacity
         }
 
-
-        bucket = new Dictionary[capacity]; // create a new bucket with the new capacity
+        Dictionary<K, V>[] newbucket = new Dictionary[capacity]; // create a new bucket with the new capacity
+        
 
         // copy the old dictionary into the new dictionary
         for (int i = 0; i < oldCapacity; i++) {
             if (oldArray[i] != null) { // if the dictionary at the index i is not null
-                for (Item<K, V> item : oldArray[i]) { // iterate through the dictionary at the index i to get each item
-                    K key = item.key;
-                    V value = item.value;
-                    int index = hash(key); // get the index where the key should hash to
-                    if (bucket[index] == null) { // if the dictionary at the index i is null
-                        bucket[index] = newChain.get(); // if the dictionary at the index i is null, create a new dictionary using the supplier
-                    }
-
-                    bucket[index].insert(key, value); // insert the key value pair into the dictionary at the index i
-                }
+                
+                    newbucket[i] = oldArray[i]; // insert the key value pair into the dictionary at the index i
+                
             }
         }
+        bucket = newbucket; // set the bucket to the new bucket
 
     }
 
