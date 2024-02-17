@@ -40,6 +40,7 @@ public class TopKSort {
             array[i] = null; //set the element to null
         }
 
+        //iterate through the min heap, pop the top element (should be the least i+! largest element until i<k)
         for (int i =0; i < k; i++) {
             array[i] = minHeap.next(); //set the ith index to the ith largest element
         }
