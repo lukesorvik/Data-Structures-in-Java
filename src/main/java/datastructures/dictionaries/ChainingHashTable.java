@@ -264,7 +264,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         Dictionary<K, V>[] oldArray = bucket; // get the old array of dictionaries
         int oldCapacity = capacity; // get the old capacity of old array
         primeIndex++; // increment the prime index
-        capacity = PRIME_SIZES[primeIndex]; // get the new capacity from the PRIME_SIZES array
+
+        if(this.primeIndex < PRIME_SIZES.length) {
+            capacity = PRIME_SIZES[primeIndex];
+        } else {
+            capacity = capacity * 2; //if the prime index is greater than the length of the PRIME_SIZES array, double the capacity
+        }
+
 
         bucket = new Dictionary[capacity]; // create a new bucket with the new capacity
 

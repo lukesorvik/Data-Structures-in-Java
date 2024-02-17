@@ -26,7 +26,7 @@ public class uMessage {
     // .hashtableConstructor(NGramTester.avlTreeConstructor());
     // .hashtableConstructor(NGramTester.binarySearchTreeConstructor());
     private static final Supplier<Dictionary<NGram, Dictionary<AlphabeticString, Integer>>> NEW_OUTER = NGramTester
-            .trieConstructor(NGram.class);
+            .hashtableConstructor(NGramTester.avlTreeConstructor());
     private static final Supplier<Dictionary<AlphabeticString, Integer>> NEW_INNER = NGramTester
             .hashtableConstructor(NGramTester.avlTreeConstructor());
 

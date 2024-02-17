@@ -3,8 +3,11 @@ package provided;
 import cse332.datastructures.containers.Item;
 import cse332.datastructures.trees.BinarySearchTree;
 import cse332.interfaces.misc.Dictionary;
+import datastructures.dictionaries.AVLTree;
 import datastructures.dictionaries.ChainingHashTable;
 import datastructures.dictionaries.MoveToFrontList;
+import p2.sorts.TopKSort;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -51,5 +54,22 @@ public class ChainingHashTableTests {
 		assertEquals(list.size(), n);
 		assertNotNull(list.find("00851"));
 		assertEquals(4260, (int) list.find("00851"));
+	}
+
+	//huge chaining hash list
+	@Test()
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+	public void huge() {
+		ChainingHashTable<String, Integer> listinner = new ChainingHashTable<>(AVLTree::new);
+		int n = 1000000;
+
+		for (int i = 0; i < n; i++) {
+			listinner.insert(String.valueOf(i), i);
+		}
+
+		for (int i = 0; i < n; i++) {
+			assertEquals(i, (int) listinner.find(String.valueOf(i)));
+		}
+		
 	}
 }
