@@ -18,7 +18,11 @@ import java.util.function.Supplier;
 
 public class uMessage {
     private static final int N = 3;
+<<<<<<< HEAD
     private static final String CORPUS = "irc.corpus";
+=======
+    private static final String CORPUS = "corpus/irc.corpus";
+>>>>>>> 426c36bd0b2f6d6e86d7f349011c8384791558de
             //"corpus/irc.corpus";
             //"corpus/dictionary.txt";
     // Use .binarySearchTreeConstructor(); if you want to test things since it is an implementation we provide and is guaranteed to work
