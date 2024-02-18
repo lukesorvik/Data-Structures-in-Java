@@ -23,6 +23,11 @@ public class NGramTester {
         return () -> new ChainingHashTable<K, V>(constructor);
     }
 
+    public static <K, V> Supplier<Dictionary<K, V>> hashtableConstructor2(
+            Supplier<Dictionary<K, V>> constructor) {
+        return () -> new ChainingHashTable<K, V>(constructor);
+    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static <K, V> Supplier<Dictionary<K, V>> binarySearchTreeConstructor() {
         return () -> new BinarySearchTree();

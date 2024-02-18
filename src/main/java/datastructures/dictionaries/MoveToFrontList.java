@@ -28,25 +28,7 @@ import java.util.NoSuchElementException;
  * 
  */
 public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
-    /*
-     * could use an array with front and end pointers
-     * since it is an array i can just swap the elements in place
-     *when using find can just iterate through the array and swap the elements
-     * sorted does not matter yippeeee
-     * add to the back of the array
-     * maybe use the data structure i implemented before (fifo queue??
-     * also look at the notes
-     * 
-     * 
-     * [1,2,0,0,0,0]
-     * F  B
-     * 
-     * not sure how to store multiple elements in the array?
-     * 
-     * 
-     * 
-     * 
-     */
+
 
     private Node head = null; //pointer to first node
     private int size =0; //number of nodes in the linked list
@@ -62,6 +44,12 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
             this.value = value;
             this.next = null;
         }
+    }
+
+    public MoveToFrontList() {
+        this.head = null;
+        this.size = 0;
+
     }
 
     
@@ -85,52 +73,40 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
             throw new IllegalArgumentException();
         }
 
-        // Check if the key already exists in the list
-        Node current = head;
-        Node prev = null;
 
-        // Check if key exists
-        // Iterate through the list to end
-        while (current != null) {
-            // If we find the key we are inserting, move it to the front
-            if (current.key.equals(key)) {
-                // Move the existing node to the front, if the node is not the first node
-                if (prev != null) {
-                    prev.next = current.next; // Set the previous node's next to the current node's next
-                    current.next = head; // Point the current node to the old node at the head
-                    head = current; // Set the head to point to the current node (new head)
-                }
 
-                V oldValue = current.value; // Value of the current node before we change it
-                current.value = value; // Change the value of the current node to the new value
-                return oldValue; // Return the old value
-            }
-            prev = current; // Remember the previous node
-            current = current.next; // Move to the next node
-        }
-
-        size++;
-        // Old key not found
         Node newNode = new Node(key, value); // Create a new node with the key and value
 
-
+        //list is empty when adding, no head val
         if (head == null) {
+            this.size++;
             head = newNode; // If the list is empty, set the head to the new node
             return null; // Return null if the key was not found, no old value replaced
         }
 
-        else {
+        // Check if key exists
+        V findval = find(key);
+
+
+        //did not find node in list
+        if(findval == null) {
+            this.size++;
             newNode.next = head; // Set the new node's next to the old head
             head = newNode; // Point the head pointer to the new node
-                    // Return null if the key was not found, no old value replaced
-        return null;
+            return null;
         }
 
+        //key was found in list, and now should be at the front of head
+        else {
+            head.value = value; //update the value at the front
+            return findval; //oldval
+            //do not increment size since no new dict was added
+        }
 
     }
 
     public int size() {
-        return size;
+        return this.size;
     }
     
 
@@ -154,13 +130,26 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
 
         // Check if the key already exists in the list
         Node current = head;
+        Node prev = null;
 
+        //iterate through the linked list
         while (current != null) {
+
             //if we find the key we are inserting, move it to the front
              if (current.key.equals(key)) {
+                 //if it is not at the front of the list, move it there
+                 if (prev != null) {
+                     if (current.next == null) {
+                         prev.next = null;
+                     }
+                     prev.next = current.next; // Set the previous node's next to the current node's next
+                     current.next = head; // Point the current node to the node at the head
+                     head = current; //update the head
+                 }
 
                  return current.value; //return the value of the current node
              }
+             prev = current; //update previous node
              current = current.next; //move to the next node
          }
 
@@ -181,7 +170,12 @@ public class MoveToFrontList<K, V> extends DeletelessDictionary<K, V> {
 
 
     private class MoveToFrontListIterator implements Iterator<Item<K, V>> {
-        private Node current = head; //start at the head of the list
+        private Node current; //start at the head of the list
+
+        //constructor
+        public MoveToFrontListIterator() {
+            current = MoveToFrontList.this.head;
+        }
 
         
           /**

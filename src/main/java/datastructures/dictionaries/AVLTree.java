@@ -32,7 +32,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
 
     public class AVLNode extends BSTNode {
         public int height;// height of the node
-        // public AVLNode[] children; inherited from BSTNode
+        // public BSTNode[] children; inherited from BSTNode
         // public K key; inherited from Item
         // public V value; inherited from Item
         // also inherited.equals and hashCode methods from Item
@@ -99,7 +99,9 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
 
         V oldval = find(key); // get the old value of the key
+
         this.root = insertRec((AVLNode) this.root, key, value); // passes our root node, key, and value to the recursive insert method
+
         //returns the root after the insert and after the tree has been balanced
 
         return oldval; // return the old value
@@ -131,20 +133,28 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         // recursive cases
         // should not reach this point if we found the key, so direction should not be 0,-1,1
         
+        //key > node.key then go right
+        if(key.compareTo(node.key) >  0) {
+            node.children[1] = insertRec((AVLNode) node.children[1], key, value); //call the right child to insert, update this node's child with the new node returned
+        } 
+        
+        //key < node.key then insert left
+        else {
+            node.children[0] = insertRec((AVLNode) node.children[0], key, value); //call the left child to insert, update this node's child with the new node returned
+        }
 
+       //after inserting, check if the tree is balanced, starting from the node we just inserted from
+        return balance(node, key);
 
-        int direction = Integer.signum(key.compareTo(node.key)); // compare the key to the current node and call recursively in that direction
-        //if -1 then key <node.key, if 1 then key > node.key, if 0 then key = node.key
+        
+    }
 
-        int child = Integer.signum(direction + 1); //to get the direction to be [0,1] instead of [-1,1], signum(-1+1) = 0, signum(1+1) = 1, any positive value = 1
-        AVLNode next = (AVLNode) node.children[child]; //get the next node to go to based off the direction
-        node.children[child] = insertRec(next, key, value); //call the child node to insert, update this node's child with the new node returned
+    public AVLNode balance(AVLNode node, K key) {
+        if (node == null) {
+            return node;
+        }   
 
-
-        // --------------------------
-        // this is after it has been inserted, so we need to check if the tree is balanced, starting from the node we just inserted from
-        // check if the tree is balanced, working from the bottom up using the path we took to insert the node
-
+        
         node.height = 1 + Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])); //set the height of the current node to 1 + the max height of the left and right children
         int balance = getBalance(node);  //Check the current node if any .right or .left children differ by a size of 1
         //-1 means the right child is larger, 0 means they are the same, 1 means the left child is larger
@@ -188,11 +198,11 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     }
 
     public AVLNode rotateRight(AVLNode node) {
-        AVLNode left = (AVLNode) node.children[0];
-        AVLNode leftright = (AVLNode) left.children[1];
+        AVLNode left = (AVLNode) node.children[0]; //left child of node
+        AVLNode leftright = (AVLNode) left.children[1]; //right child of left node
 
-        left.children[1] = node;
-        node.children[0] = leftright;
+        left.children[1] = node; //set .left.right = root
+        node.children[0] = leftright; //set root.left = left.right
 
         node.height = Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])) + 1;
         left.height = Math.max(height((AVLNode) left.children[0]), height((AVLNode) left.children[1])) + 1;

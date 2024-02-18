@@ -57,6 +57,7 @@ public class MoveToFrontListTests {
 		// Compare strings to make sure we get the right one
 		// Can use list.toString as well, but I'm not sure if students may modify that
 		String mtf_test = Arrays.toString(dcs);
+		System.out.println(list.size());
 		assertEquals("[4=1, 7=1, 0=1, 1=1, 2=1, 3=1, 8=1, 9=1, 14=3, 10=9, 11=1, 12=1, 13=1, 31=1, 5=1, 6=1]", mtf_test);
 	}
 
