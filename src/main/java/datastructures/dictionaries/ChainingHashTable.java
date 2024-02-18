@@ -254,7 +254,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
        
 
         
-        int hashval = Math.abs(37 * key.hashCode());
+        int hashval = Math.abs(key.hashCode());
         
 
         hashval = hashval % capacity; // mod the hashcode by the capacity of the hashtable
