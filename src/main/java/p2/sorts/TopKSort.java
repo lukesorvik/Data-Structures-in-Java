@@ -47,16 +47,17 @@ public class TopKSort {
             array[i] = null; //set the element to null
         }
 
-        int i =0;
+
 
         //iterate through the min heap, pop the top element (should be the least i+! largest element until i<k)
         //run as long as i is less than k, and as long as minheap has elements (in case k > array.length)
-        while (i<k && minHeap.size()>0) {
+        for(int i=0; i<k ; i++) {
             array[i] = minHeap.next(); //set the ith index to the ith largest element
-            i++;
+
         }
     }
 
+    //for each element add log(n), and remove log(n) time, do for n items so O(n2logn)
     //add the element to the heap, keeping the size of the heap at size<k
     public static <E> void add(WorkList<E> minheap, E element, int k) {
         minheap.add(element); //add the element to the heap, smallest item guarenteed to be at the top

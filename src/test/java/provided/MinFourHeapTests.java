@@ -3,6 +3,8 @@ package provided;
 import cse332.interfaces.worklists.PriorityWorkList;
 import cse332.interfaces.worklists.WorkList;
 import datastructures.worklists.MinFourHeap;
+import p2.sorts.TopKSort;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -15,6 +17,43 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MinFourHeapTests {
     private static final int SEED = 42;
+
+
+    
+	//run 100 times
+	//each with random ints and random array size
+	@Test()
+	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+	public void fuzzyadd() {
+		for (int j = 0; j < 100; j++) {
+		WorkList<Integer> STUDENT_INT = new MinFourHeap<>(Integer::compareTo);
+
+		Random rand = new Random();
+
+
+
+		int arraySize = rand.nextInt(1000) +100; //lower bound of 10, k is always less than array size
+		Integer[] arr = new Integer[arraySize]; //create an array of random size
+
+		//fill the array with random integers
+		for (int i = 0; i < arraySize; i++) {
+			arr[i] = rand.nextInt(100); //add to array to test against 
+            STUDENT_INT.add(arr[i]); //add to the heap
+            
+		}
+
+		Arrays.sort(arr); // sort the array in ascending order
+
+
+		for (int i = 0; i < arraySize; i++) {
+			assertEquals(arr[i], STUDENT_INT.next()); //delete the min element, test if it is the correct one 
+		}
+    }
+		
+	}
+
+    
+
 
     @Test()
     @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)

@@ -32,7 +32,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     int size; // the number of elements in the hashtable
     int capacity; // the capacity of the hashtable, used for hashing, needs to be a prime number,
                   // and will be updated when rehashing
-    double loadFactor; // the load factor of the hashtable
+    int loadFactor; // the load factor of the hashtable
     private Dictionary<K, V>[] bucket; // an array where each element is a dictionary that will store the keys that
                                        // hash to that index
     int primeIndex = 0; // the index of the prime number in the PRIME_SIZES array that we are currently
@@ -95,12 +95,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
                     // have added a new key value pair
         }
 
+        this.loadFactor = size / capacity; // update the load factor
         // check if the load factor is greater than 2, if it is, rehash
         if (loadFactor >= 2) {
             rehash();
         }
 
-        loadFactor = size / capacity; // update the load factor
+        this.loadFactor = size / capacity; // update the load factor
         return oldValue; // return the old value
 
     }
@@ -273,7 +274,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         }
 
 
-        bucket = new Dictionary[capacity]; // create a new bucket with the new capacity
+        Dictionary<K, V>[] temp = new Dictionary[capacity]; // create a new bucket with the new capacity
 
         // copy the old dictionary into the new dictionary
         for (int i = 0; i < oldCapacity; i++) {
@@ -282,14 +283,15 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
                     K key = item.key;
                     V value = item.value;
                     int index = hash(key); // get the index where the key should hash to
-                    if (bucket[index] == null) { // if the dictionary at the index i is null
-                        bucket[index] = newChain.get(); // if the dictionary at the index i is null, create a new dictionary using the supplier
+                    if (temp[index] == null) { // if the dictionary at the index i is null
+                       temp[index] = newChain.get(); // if the dictionary at the index i is null, create a new dictionary using the supplier
                     }
 
-                    bucket[index].insert(key, value); // insert the key value pair into the dictionary at the index i
+                    temp[index].insert(key, value); // insert the key value pair into the dictionary at the index i
                 }
             }
         }
+        this.bucket = temp; // set the bucket to the new bucket 
 
     }
 

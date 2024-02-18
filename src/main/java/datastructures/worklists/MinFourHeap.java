@@ -94,15 +94,16 @@ public class MinFourHeap<E> extends PriorityWorkList<E> {
         return size;
     }
 
+    //going to try to just not reset the size to default size, but to keep at max size
     @Override
     public void clear() {
-        data = (E[]) new Object[10]; //initialize array to size 10
-        maxsize = 10;
+        data = (E[]) new Object[maxsize]; //initialize array to size 10
+        //maxsize = 10;
         size = 0;
     }
 
 
-    
+    //log4(n) since we are doing one comparison for each level of the tree
     //percolate up the element at the given index
     //index is the index of the element that needs to be perculated up
     public void percolateUp(int childIndex) {
@@ -124,6 +125,7 @@ public class MinFourHeap<E> extends PriorityWorkList<E> {
         
     }
 
+    //4 comparisons per level * o(log4(n)) levels = o(log(n))
     //percolate down the element at the given parentIndex
     public void percolateDown(int parentIndex) {
         int leftChild = 4 * parentIndex + 1; //find the leftmost child of the parentIndex

@@ -58,10 +58,10 @@ public class ChainingHashTableTests {
 
 	//huge chaining hash list
 	@Test()
-	@Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+	@Timeout(value = 3, unit = TimeUnit.SECONDS)
 	public void huge() {
 		ChainingHashTable<String, Integer> listinner = new ChainingHashTable<>(AVLTree::new);
-		int n = 1000000;
+		int n = 10000000;
 
 		for (int i = 0; i < n; i++) {
 			listinner.insert(String.valueOf(i), i);
