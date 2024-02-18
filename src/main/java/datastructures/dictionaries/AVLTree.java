@@ -72,9 +72,9 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         V oldval = find(key); // get the old value of the key
         AVLNode newNode = new AVLNode(key,value);
 
+        //if we did no
         if(oldval == null) {
-            this.size++;
-            oldval = value;
+            this.size++; //we are going to add a new vals
         }
 
 

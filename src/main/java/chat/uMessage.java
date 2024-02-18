@@ -29,7 +29,7 @@ public class uMessage {
     // .hashtableConstructor(NGramTester.binarySearchTreeConstructor());
     //.hashtableConstructor(NGramTester.hashtableConstructor(NGramTester.avlTreeConstructor())); the one that wasnt working
     private static final Supplier<Dictionary<NGram, Dictionary<AlphabeticString, Integer>>> NEW_OUTER = NGramTester
-                    .hashtableConstructor(NGramTester.hashtableConstructor(NGramTester.avlTreeConstructor()));
+                    .hashtableConstructor(NGramTester.avlTreeConstructor());
     private static final Supplier<Dictionary<AlphabeticString, Integer>> NEW_INNER = NGramTester
             .hashtableConstructor(NGramTester.avlTreeConstructor());
 
