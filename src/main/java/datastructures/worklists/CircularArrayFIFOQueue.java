@@ -254,9 +254,14 @@ public class CircularArrayFIFOQueue<E extends Comparable> extends FixedSizeFIFOW
             }
         }
 
-        //maybe the val it returns matters (cant just be 1 or -1)
-        return this.size() - other.size();
-
+        //if we get to this point, then all the elements are the same
+        //return which list is bigger, 0 if they are the same size
+        if (this.size() > other.size()) {
+            return 1;
+        } else if (this.size() < other.size()) {
+            return -1;
+        }
+        return 0;
 
     }
 
@@ -361,12 +366,10 @@ public class CircularArrayFIFOQueue<E extends Comparable> extends FixedSizeFIFOW
         //get the sum of elements in the curcular array
         for (int i = 0; i < size; i++) {
             if (array[i] != null) { //if the element is not null
-                E val = array[front+i % array.length];
-                result += val.hashCode() * Math.pow(relativelyPrime, i); //get the hashcode of the element and add it to the result
+                result += array[i].hashCode() * Math.pow(relativelyPrime, i); //get the hashcode of the element and add it to the result
             }
 
         }
         return result;
     }
-    
 }

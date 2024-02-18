@@ -96,15 +96,15 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
             return newNode;
         }
 
-        int comparison = root.key.compareTo(newNode.key); //if we have to iterate through a list, only do it once instead of twice
+
         
         //key > node.key then go right
-        if(comparison >  0) {
+        if(root.key.compareTo(newNode.key) >  0) {
             root.children[0] = insertRec(newNode, (AVLNode) root.children[0]); //call the left child to insert, update this node's child with the new node returned
         } 
         
         //root.key < newNode.key then go right, since new key is greater than the current node's key
-        else if(comparison <  0) {
+        else if(root.key.compareTo(newNode.key) <  0) {
             root.children[1] = insertRec(newNode, (AVLNode) root.children[1]); //call the right child to insert, update this node's child with the new node returned
         }
 

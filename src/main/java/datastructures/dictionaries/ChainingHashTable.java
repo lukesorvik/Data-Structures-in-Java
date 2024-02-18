@@ -251,17 +251,13 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
     // uses the .hashcode of the key % the capacity of our current array
     // returns the index where the key should hash to
     public int hash(K key) {
-
         int hashval = key.hashCode(); // gets the hashcode of the key
-        
-
-        if (hashval < 0) {
-            Math.abs(hashval); // if the hashval is negative, add the capacity to it
-        }
-
-
-
         hashval = hashval % capacity; // mod the hashcode by the capacity of the hashtable
+
+        //dddd
+        if (hashval < 0) {
+            hashval += capacity; // if the hashval is negative, add the capacity to it
+        }
 
         return hashval;
 
