@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 public class uMessage {
     private static final int N = 3;
-    private static final String CORPUS = "corpus/dictionary.txt";
+    private static final String CORPUS = "corpus/irc.corpus";
             //"corpus/irc.corpus";
             //"corpus/dictionary.txt";
     // Use .binarySearchTreeConstructor(); if you want to test things since it is an implementation we provide and is guaranteed to work
@@ -27,8 +27,9 @@ public class uMessage {
     // .trieConstructor(AlphabeticString.class);
     // .hashtableConstructor(NGramTester.avlTreeConstructor());
     // .hashtableConstructor(NGramTester.binarySearchTreeConstructor());
+    //.hashtableConstructor(NGramTester.hashtableConstructor(NGramTester.avlTreeConstructor())); the one that wasnt working
     private static final Supplier<Dictionary<NGram, Dictionary<AlphabeticString, Integer>>> NEW_OUTER = NGramTester
-            .hashtableConstructor(NGramTester.hashtableConstructor(NGramTester.avlTreeConstructor()));
+                    .hashtableConstructor(NGramTester.hashtableConstructor(NGramTester.avlTreeConstructor()));
     private static final Supplier<Dictionary<AlphabeticString, Integer>> NEW_INNER = NGramTester
             .hashtableConstructor(NGramTester.avlTreeConstructor());
 

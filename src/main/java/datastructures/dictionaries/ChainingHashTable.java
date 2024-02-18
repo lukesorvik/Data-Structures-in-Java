@@ -210,15 +210,16 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
         // gets the next bucket that has an object, if no next bucket exists then it
         // will end on the last bucket
         public void getNextBucket() {
+
+
+
+
             // this runs when bucketIndex is -1, will find the first bucket that has an
             // object
-            if (bucketIndex < capacity || bucketIterator == null || bucketIterator.hasNext() == false) { 
-                // if the current index is less than the capacity, or the current iterator is null, or the current iterator has no more elements
-                bucketIndex++;
-                // while we are in the bouunds of array, and the current index does not have a
-                // chain or the current chain is empty
+            bucketIndex++;
+
                 while (bucketIndex < capacity
-                        && (bucket[bucketIndex] == null || bucket[bucketIndex].isEmpty() == true)) {
+                        && (bucket[bucketIndex] == null)) {
                     bucketIndex++; // go to the next index
 
                 }
@@ -228,7 +229,7 @@ public class ChainingHashTable<K, V> extends DeletelessDictionary<K, V> {
                 }
                 bucketIterator = bucket[bucketIndex].iterator(); // set the iterator of the current bucket
 
-            }
+
 
         }
 

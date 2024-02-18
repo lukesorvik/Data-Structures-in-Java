@@ -63,35 +63,6 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     }
 
 
-    // override insert method to create AVLNode instances instead of BSTNode
-    // instances
-    // find method to return AVLNode instead of BSTNode
-    // find the insertion location based off the tree
-    // if we find the key, we return the node so we can overwrite the value
-    // if we don't find the key, we create a new node and insert it into the tree at
-    // the correct location so that
-    // all keys to the left are less than the current node, and all keys to the
-    // right are greater than the current node
-    /**
-=
-    // overwrite the insert method
-    // return the previous value associated with value, or null if there was no
-    // mapping for key
-    /**
-     * Associates the specified value with the specified key in this map. If the
-     * map previously contained a mapping for the key, the old value is
-     * replaced.
-     *
-     * @param key
-     *              key with which the specified value is to be associated
-     * @param value
-     *              value to be associated with the specified key
-     * @return the previous value associated with <tt>key</tt>, or <tt>null</tt>
-     *         if there was no mapping for <tt>key</tt>.
-     * @throws IllegalArgumentException
-     *                                  if either key or value is null.
-     */
-    @Override
 
     public V insert(K key, V value) {
         if (key == null) {
@@ -99,8 +70,15 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
 
         V oldval = find(key); // get the old value of the key
+        AVLNode newNode = new AVLNode(key,value);
 
-        this.root = insertRec((AVLNode) this.root, key, value); // passes our root node, key, and value to the recursive insert method
+        if(oldval == null) {
+            this.size++;
+            oldval = value;
+        }
+
+
+        this.root = insertRec(newNode, (AVLNode) this.root); // passes our root node, key, and value to the recursive insert method
 
         //returns the root after the insert and after the tree has been balanced
 
@@ -108,43 +86,34 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
 
     }
 
-    // recursively find the node to insert, insert it, then on way back up, check if
-    // the tree is balanced
-    // returns the old value if we find the key, or null if we don't find the key
-    public AVLNode insertRec(AVLNode node, K key, V value) {
-        // search for the key in the tree
-        // if we find the key, overwrite the value, save the old value, and return it
-        // check if the tree is balanced on recursive up
+
+    public AVLNode insertRec(AVLNode newNode, AVLNode root) {
 
         // base cases
         // --------------------------
         // did not find the key, so we insert the new node
-        if (node == null) {
-            node = new AVLNode(key, value); // create a new node with the key and value
-            this.size++; // increment the size of the tree
-            return node; // return the current node
-        }
-        // found the key, so we overwrite the value
-        if (key.compareTo(node.key) == 0) {
-            node.value = value; // overwrite the old value with the new value
-            return node; // return the current node
-        }
-        // --------------------------
-        // recursive cases
-        // should not reach this point if we found the key, so direction should not be 0,-1,1
-        
-        //key > node.key then go right
-        if(key.compareTo(node.key) >  0) {
-            node.children[1] = insertRec((AVLNode) node.children[1], key, value); //call the right child to insert, update this node's child with the new node returned
-        } 
-        
-        //key < node.key then insert left
-        else {
-            node.children[0] = insertRec((AVLNode) node.children[0], key, value); //call the left child to insert, update this node's child with the new node returned
+        if (root == null) {
+            return newNode;
         }
 
+
+        
+        //key > node.key then go right
+        if(root.key.compareTo(newNode.key) >  0) {
+            root.children[0] = insertRec(newNode, (AVLNode) root.children[0]); //call the left child to insert, update this node's child with the new node returned
+        } 
+        
+        //root.key < newNode.key then go right, since new key is greater than the current node's key
+        else if(root.key.compareTo(newNode.key) <  0) {
+            root.children[1] = insertRec(newNode, (AVLNode) root.children[1]); //call the right child to insert, update this node's child with the new node returned
+        }
+
+        //have same key values
+        else {
+            root.value = newNode.value; //update the value of the current node
+        }
        //after inserting, check if the tree is balanced, starting from the node we just inserted from
-        return balance(node, key);
+        return balance(root, newNode.key);
 
         
     }
@@ -152,9 +121,8 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
     public AVLNode balance(AVLNode node, K key) {
         if (node == null) {
             return node;
-        }   
+        }
 
-        
         node.height = 1 + Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])); //set the height of the current node to 1 + the max height of the left and right children
         int balance = getBalance(node);  //Check the current node if any .right or .left children differ by a size of 1
         //-1 means the right child is larger, 0 means they are the same, 1 means the left child is larger
@@ -194,6 +162,7 @@ public class AVLTree<K extends Comparable<? super K>, V> extends BinarySearchTre
         }
 
         // no need to balance the tree
+        node.height = 1 + Math.max(height((AVLNode) node.children[0]), height((AVLNode) node.children[1])); //set the height of the current node to 1 + the max height of the left and right children
         return node;
     }
 

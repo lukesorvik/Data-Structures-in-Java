@@ -131,6 +131,7 @@ public class CircularArrayFIFOQueue<E extends Comparable> extends FixedSizeFIFOW
 
         //we want the element in the front of the line
         E result = array[front];
+        this.array[front] = null;
         front = (front+1) % capacity; //mod capacity since it may be circular so we want to set the front accurately
         size--;//decrement the size of the worklist
 
