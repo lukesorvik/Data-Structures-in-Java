@@ -30,6 +30,10 @@ We were not allowed to use any data structures provided by Java; we were only al
 
 - **Move-to-Front List:**
   - A linked list where new items are inserted at the front, and existing items move to the front upon reference.
+- Heap sort
+- Quick Sort
+- TopK Sort
+
 
 ## Directory Structure
 
