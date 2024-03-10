@@ -37,7 +37,6 @@ We were not allowed to use any data structures provided by Java; we were only al
 
 ## Directory Structure
 
-\src\main\java\datastructures
 ## All of the datastructures I implemented are in the directory: 
 ```bash
 \src\main\java\datastructures
