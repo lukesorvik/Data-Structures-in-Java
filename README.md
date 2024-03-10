@@ -38,7 +38,7 @@ We were not allowed to use any data structures provided by Java; we were only al
 ## Directory Structure
 
 \src\main\java\datastructures
-## All of the datastructures I implemented is in the directory: 
+## All of the datastructures I implemented are in the directory: 
 ```bash
 \src\main\java\datastructures
 ```
@@ -48,7 +48,7 @@ We were not allowed to use any data structures provided by Java; we were only al
   <img src="files.png?raw=true" height="250">
 </p>
 
-## All of the Sorts I implemented is in the directory: 
+## All of the Sorts I implemented are in the directory: 
 ```bash
 \src\main\java\p2\sorts
 ```
