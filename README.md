@@ -8,7 +8,7 @@ We were not allowed to use any data structures provided by Java; we were only al
   - A self-balancing binary search tree that maintains logarithmic height for efficient operations.
 
 - **Chaining Hash Table:**
-  - A hash table that uses any dictionary data structure as each bucket in the hashtable to chain elements. Supports separate chaining.
+  - A hash table that uses separate chaining where each bucket uses any dictionary data structure in the hashtable to chain elements.
 
 - **HashTrieMap:**
   - A map implementation using tries for efficient storage and retrieval of key-value pairs.
@@ -20,7 +20,7 @@ We were not allowed to use any data structures provided by Java; we were only al
   - A stack implemented using arrays, dynamically growing as elements are added.
 
 - **Circular FIFO Queue:**
-  - A queue implemented using an array in a circular fashion, optimizing space usage and providing O(1) lookup time.
+  - An array was used to implement the queue, circular in nature to optimize the space used in the array, and provide O(1) lookup time for any element in the queue
 
 - **ListFIFOQueue:**
   - A queue implemented as a linked list for efficient operations.
@@ -37,8 +37,6 @@ We were not allowed to use any data structures provided by Java; we were only al
 
 ## Directory Structure
 
-All implemented data structures can be found in the directory:
-```bash
 \src\main\java\datastructures
 ## All of the datastructures I implemented is in the directory: 
 ```bash
