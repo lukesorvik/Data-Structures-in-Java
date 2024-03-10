@@ -1,6 +1,6 @@
 # Project for implementing custom data Structures in java
-We were not allowed to use any data structures provided by java, we were only allowed to use primative data types, and classes we build ourselves.
-On top of this I wrote my own tests using techniques like fuzzy testing to test the data structures I implemented.
+We were not allowed to use any data structures provided by java, we were only allowed to use primative data types, and classes we built ourselves.
+On top of this I wrote my own Junit tests using techniques like fuzzy testing to test the data structures I implemented.
 
 ## This was a project where we implemented our own: 
 
@@ -32,7 +32,7 @@ On top of this I wrote my own tests using techniques like fuzzy testing to test 
 \src\main\java\p2\sorts
 ```
 <p float="left">
-  <img src="files2.png?raw=true" height="250">
+  <img src="files2.png?raw=true" height="100">
 </p>
 
 
