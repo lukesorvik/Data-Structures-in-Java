@@ -1,8 +1,7 @@
 # Project for implementing custom data Structures in Java
+I was not allowed to use any data structures provided by Java; we were only allowed to use primitive data types and classes we built ourselves. On top of this, I wrote my own JUnit tests using techniques like fuzzy testing to test the data structures I implemented.
 
-We were not allowed to use any data structures provided by Java; we were only allowed to use primitive data types and classes we built ourselves. On top of this, I wrote my own JUnit tests using techniques like fuzzy testing to test the data structures I implemented.
-
-## This was a project where we implemented our own:
+## This was a project where I implemented:
 
 - **AVL Tree:**
   - A self-balancing binary search tree that maintains logarithmic height for efficient operations.
