@@ -1,22 +1,41 @@
-# Project for implementing custom data Structures in java
-We were not allowed to use any data structures provided by java, we were only allowed to use primative data types, and classes we built ourselves.
-On top of this I wrote my own Junit tests using techniques like fuzzy testing to test the data structures I implemented.
+# Project for implementing custom data Structures in Java
 
-## This was a project where we implemented our own: 
+We were not allowed to use any data structures provided by Java; we were only allowed to use primitive data types and classes we built ourselves. On top of this, I wrote my own JUnit tests using techniques like fuzzy testing to test the data structures I implemented.
 
-- Avl Tree
-- Chaining Hash Table = A hash table that uses any dictionary data structure as each bucket in the hashtable to chain elements
-- HashTrieMap = A map using tries
-- HashTrieSet = A set using tries
-- Array Stack = array using a stack, that grows as you add items
-- Circular FIFO QUEUE = used an array to implement a queue, circular in nature to optimize the space used in the array, and provide O(1) lookup time for any element in the queue
-- ListFIFOQueue = Linked list
-- MinFourHeap = Minheap, with custom comparator for how the objects are compared, uses 4 nodes instead of 2, and uses an array.
-- Move to front list = a type of linked list where new items are inserted at the front of the list, and an existing item gets moved to the front whenever it is referenced
-- Heap sort
-- Quick Sort
-- TopK Sort
+## This was a project where we implemented our own:
 
+- **AVL Tree:**
+  - A self-balancing binary search tree that maintains logarithmic height for efficient operations.
+
+- **Chaining Hash Table:**
+  - A hash table that uses any dictionary data structure as each bucket in the hashtable to chain elements. Supports separate chaining.
+
+- **HashTrieMap:**
+  - A map implementation using tries for efficient storage and retrieval of key-value pairs.
+
+- **HashTrieSet:**
+  - A set implementation utilizing tries for optimal storage and quick membership tests.
+
+- **Array Stack:**
+  - A stack implemented using arrays, dynamically growing as elements are added.
+
+- **Circular FIFO Queue:**
+  - A queue implemented using an array in a circular fashion, optimizing space usage and providing O(1) lookup time.
+
+- **ListFIFOQueue:**
+  - A queue implemented as a linked list for efficient operations.
+
+- **MinFourHeap:**
+  - A minimum heap with a custom comparator for comparing elements. Utilizes four nodes per parent for optimized heap operations.
+
+- **Move-to-Front List:**
+  - A linked list where new items are inserted at the front, and existing items move to the front upon reference.
+
+## Directory Structure
+
+All implemented data structures can be found in the directory:
+```bash
+\src\main\java\datastructures
 ## All of the datastructures I implemented is in the directory: 
 ```bash
 \src\main\java\datastructures
